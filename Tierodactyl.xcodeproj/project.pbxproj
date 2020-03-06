@@ -60,7 +60,7 @@
 		5F48FC83240433B900F195E2 /* HomeScreenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenTableViewCell.swift; sourceTree = "<group>"; };
 		5F48FC8524044A4C00F195E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F49665C2405AD90003E70A0 /* addViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addViewController.swift; sourceTree = "<group>"; };
-		5F8658BE23FC5D4A00D3E997 /* Tierodactyl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tierodactyl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F8658BE23FC5D4A00D3E997 /* ptierodactyl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ptierodactyl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F8658C123FC5D4A00D3E997 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F8658C323FC5D4A00D3E997 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5F8658C523FC5D4A00D3E997 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 		5F8658BF23FC5D4A00D3E997 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5F8658BE23FC5D4A00D3E997 /* Tierodactyl.app */,
+				5F8658BE23FC5D4A00D3E997 /* ptierodactyl.app */,
 				5F8658D423FC5D4C00D3E997 /* TierodactylTests.xctest */,
 				5F8658DF23FC5D4C00D3E997 /* TierodactylUITests.xctest */,
 			);
@@ -207,7 +207,7 @@
 			);
 			name = Tierodactyl;
 			productName = Tierodactyl;
-			productReference = 5F8658BE23FC5D4A00D3E997 /* Tierodactyl.app */;
+			productReference = 5F8658BE23FC5D4A00D3E997 /* ptierodactyl.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5F8658D323FC5D4C00D3E997 /* TierodactylTests */ = {
@@ -559,7 +559,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.s013419constraints.Tierodactyl;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ptierodactyl;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -578,7 +578,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ptierodactyl;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
