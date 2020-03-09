@@ -10,15 +10,30 @@ import UIKit
 
 class TierViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
     
+   
+    
+    
     //keeps track of how many rows to print out - needed because array is optional
     var counter = 0
     //array of optional cells, each one represents a row
     
-    var cells : [IndividualCollectionView] = []
-   
+    var cells = [IndividualCollectionView]()
+    
     var collection = IndividualCollectionView(frame: CGRect(x: 0, y: 0, width: 1, height: 1), collectionViewLayout: UICollectionViewFlowLayout())
     
     var source = IndexPath()
+    
+    var numbers = [0]
+    
+    func ini(_ name: String){
+        
+        self.navigationItem.title = name
+        cells = []
+        //this is what is displayed at the top
+        //make cells equal to blank array
+    }
+    
+    var cellHolder = CollectionViewCell()
     
     // number of cells in a collectionview, this will be made similar to corresponding class in TierVC
     //when we create funcationality to add elements to each row
@@ -26,20 +41,25 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         var collection = collectionView as! IndividualCollectionView
         
         return  collection.count //need separate value for each collectionview
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ViewCell", for: indexPath) as! CollectionViewCell
         
+        var collection = collectionView as! IndividualCollectionView
+        
+        
         cell.layer.cornerRadius = 10
         cell.backgroundColor = .green
         cell.setProps()
-        cell.text.text = String(indexPath.row+1)
-        cell.addSubview(cell.text)
+       // cell.text.text = "AH!"
+      //  cell.addSubview(cell.text)
         cell.text.translatesAutoresizingMaskIntoConstraints = false
         cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
         cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
         
+        cellHolder = cell
         
         return cell
         
@@ -67,8 +87,13 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
         if let item = coordinator.items.first{
             
+            
             collectionView.reloadData()
             collection.reloadData()
+            
+            //            collectionView.arr.insert(collection.arr[source.row], at: destinationIndexPath.row)
+            //            collection.arr.remove(at: source.row)
+            //
             
             collectionView.performBatchUpdates({
                 collectionView.insertItems(at: [destinationIndexPath])
@@ -125,10 +150,49 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     
     //when green section of cell is clicked a collection view cell will be added
     
+    var string: String = ""
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+//        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
+//            UIAlertController.Style.alert)
+//
+//        alert.addTextField(configurationHandler: textFieldHandler)
+//
+//
+//        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
+//
+//
+//            var label = UILabel()
+//            label.text = (alert.textFields?.first!.text)!
+//
+//
+//            self.cells[indexPath.row].count+=1
+//
+//            self.cells[indexPath.row].reloadData()
+//
+//
+//            self.cellHolder.text.text = label.text!
+//            self.cellHolder.addSubview(self.cellHolder.text)
+//
+//            self.cells[indexPath.row].reloadData()
+//            self.tableView.reloadData()
+//        }))
+//
+//
+//        self.present(alert, animated: true, completion:nil)
+        
         cells[indexPath.row].count+=1
         cells[indexPath.row].reloadData()
         tableView.reloadData()
+        
+    }
+    
+    func textFieldHandler(textField: UITextField!)
+    {
+        if (textField) != nil {
+            textField.text = ""
+        }
     }
     
     //sets row height for each table view row
@@ -155,6 +219,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
             cell!.dragInteractionEnabled = true
             cell!.dragDelegate = self
             cell!.dropDelegate = self
+            //cell?.addArr(sort()[indexPath.row])
             
             
             var table = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as! IndexPath) as! TierTableViewCell
