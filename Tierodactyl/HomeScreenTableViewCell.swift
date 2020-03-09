@@ -8,8 +8,10 @@
 
 import UIKit
 
-class HomeScreenTableViewCell: UITableViewCell {
+class HomeScreenTableViewCell: UITableViewCell{
 
+    var views: [IndividualCollectionView] = []
+    //array of individuual collection view
     override func awakeFromNib() {
         super.awakeFromNib()
     

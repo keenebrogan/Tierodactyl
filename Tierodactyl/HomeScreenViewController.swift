@@ -11,10 +11,18 @@ import UIKit
 class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
    
     //all the lists
-    let tbView = UITableView();
-    var lists : [UITableViewCell]? = []
+    let tbView = UITableView()
+    var lists : [SeparateLists] = []
     var stuff = ["List1"]
     
+    var homeLists: [String: [TierViewController]] = [:]
+
+    
+    //dictionary with name of list and array for list
+    
+    
+    
+    // array of homescreen object - extends table vew cell - has property of array of individual cells. when you add new list it will create the object that each list is
 
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        guard var count = lists?.count else {return 1}
@@ -81,7 +89,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         
             setUpTable()
-        stuff.append("List2")
+     
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
