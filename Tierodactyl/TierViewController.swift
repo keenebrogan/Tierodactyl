@@ -154,37 +154,36 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
-//            UIAlertController.Style.alert)
-//
-//        alert.addTextField(configurationHandler: textFieldHandler)
-//
-//
-//        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
-//
-//
-//            var label = UILabel()
-//            label.text = (alert.textFields?.first!.text)!
-//
-//
-//            self.cells[indexPath.row].count+=1
-//
-//            self.cells[indexPath.row].reloadData()
-//
-//
+        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
+            UIAlertController.Style.alert)
+
+        alert.addTextField(configurationHandler: textFieldHandler)
+
+
+        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
+
+
+            var label = UILabel()
+            label.text = (alert.textFields?.first!.text)!
+
+
+            self.cells[indexPath.row].count+=1
+//           self.cells[indexPath.row].reloadData()
+            
+            //i need to figure out how to access the cell i just added!!!
+
+
 //            self.cellHolder.text.text = label.text!
 //            self.cellHolder.addSubview(self.cellHolder.text)
 //
-//            self.cells[indexPath.row].reloadData()
-//            self.tableView.reloadData()
-//        }))
-//
-//
-//        self.present(alert, animated: true, completion:nil)
-        
-        cells[indexPath.row].count+=1
-        cells[indexPath.row].reloadData()
-        tableView.reloadData()
+//            self.cellHolder = CollectionViewCell()
+
+            self.cells[indexPath.row].reloadData()
+            self.tableView.reloadData()
+        }))
+
+
+        self.present(alert, animated: true, completion:nil)
         
     }
     
