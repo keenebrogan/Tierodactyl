@@ -6,6 +6,12 @@
 //  Copyright © 2020 Margaret Hollis (student LM). All rights reserved.
 //
 
+
+//current issues
+//1. can't change cell size... why???
+//2. adding text to a cell is acting really weird so thing about that
+//3. dragginng cells and keeping text only works sometimes.....
+
 import UIKit
 
 class TierViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
@@ -33,7 +39,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         //make cells equal to blank array
     }
     
-    var cellHolder = CollectionViewCell()
+    //var cellHolder = CollectionViewCell()
     
     // number of cells in a collectionview, this will be made similar to corresponding class in TierVC
     //when we create funcationality to add elements to each row
@@ -55,11 +61,13 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         cell.setProps()
        // cell.text.text = "AH!"
       //  cell.addSubview(cell.text)
-        cell.text.translatesAutoresizingMaskIntoConstraints = false
-        cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
-        cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
+//        cell.text.translatesAutoresizingMaskIntoConstraints = false
+//        cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
+//        cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
         
-        cellHolder = cell
+        
+        
+       // cellHolder = cell
         
         return cell
         
@@ -91,21 +99,32 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
             collectionView.reloadData()
             collection.reloadData()
             
-            //            collectionView.arr.insert(collection.arr[source.row], at: destinationIndexPath.row)
-            //            collection.arr.remove(at: source.row)
-            //
             
+            //new one
             collectionView.performBatchUpdates({
                 collectionView.insertItems(at: [destinationIndexPath])
                 collectionView.count+=1
             }, completion: nil)
             
+            collectionView.reloadData()
             
+            //DOESNT WORK WHEN DRAGGING TO EMPTY ROW!!!!!!!!!!!!!!!!!!!!
+           
+            var newCell = collectionView.cellForItem(at: destinationIndexPath) as! CollectionViewCell
+        
+            var oldCellText = ""
+            
+            //old one
             collection.performBatchUpdates({
+                
+                oldCellText = (collection.cellForItem(at: source) as! CollectionViewCell).text.text!
+                
                 collection.deleteItems(at: [source])
+                
                 collection.count-=1
             }, completion: nil)
             
+            newCell.text.text = oldCellText
             
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             
@@ -148,36 +167,39 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
     }
     
-    //when green section of cell is clicked a collection view cell will be added
-    
-    var string: String = ""
-    
+   
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        self.cells[indexPath.row].count+=1
+        self.cells[indexPath.row].reloadData()
+        self.tableView.reloadData()
+         
+
         let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
             UIAlertController.Style.alert)
 
         alert.addTextField(configurationHandler: textFieldHandler)
 
+       
+        
+        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
 
-        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
-
-
-            var label = UILabel()
-            label.text = (alert.textFields?.first!.text)!
-
-
-            self.cells[indexPath.row].count+=1
-//           self.cells[indexPath.row].reloadData()
+            var location = self.cells[indexPath.row].indexPath(for: self.cells[indexPath.row].visibleCells.last!)!
             
-            //i need to figure out how to access the cell i just added!!!
-
-
-//            self.cellHolder.text.text = label.text!
-//            self.cellHolder.addSubview(self.cellHolder.text)
-//
-//            self.cellHolder = CollectionViewCell()
-
+            var cell = self.cells[indexPath.row].cellForItem(at: location) as! CollectionViewCell
+            
+            let label = UILabel()
+            label.text = (alert.textFields?.first!.text)!
+            
+            cell.text = label
+            cell.setProps()
+        
+            self.cells[indexPath.row].reloadData()
+            self.tableView.reloadData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            self.cells[indexPath.row].count-=1
             self.cells[indexPath.row].reloadData()
             self.tableView.reloadData()
         }))
