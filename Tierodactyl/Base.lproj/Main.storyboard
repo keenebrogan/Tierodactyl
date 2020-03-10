@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VD0-C8-Quq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +27,7 @@
         <!--Start-->
         <scene sceneID="BFC-Uf-Mat">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-7Zg-2L-s0J" id="7Zg-2L-s0J" customClass="OriginalViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UIViewController-7Zg-2L-s0J" id="7Zg-2L-s0J" customClass="OriginalViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sY6-B5-swD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,7 +143,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="RFe-f0-yLi">
             <objects>
-                <viewController id="aJo-vd-JXS" customClass="SignUpViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="aJo-vd-JXS" customClass="SignUpViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jww-MD-5YA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -244,7 +244,7 @@
         <!--Add View Controller-->
         <scene sceneID="RQc-Hi-L0Q">
             <objects>
-                <viewController id="wVj-5w-2yk" customClass="addViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wVj-5w-2yk" customClass="addViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hi4-DR-76q">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -292,7 +292,7 @@
         <!--Login View Controller-->
         <scene sceneID="qxz-7p-oQQ">
             <objects>
-                <viewController id="xgL-Q2-ND2" customClass="LoginViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xgL-Q2-ND2" customClass="LoginViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dXV-9g-sin">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -377,7 +377,7 @@
         <!--Settings View Controller-->
         <scene sceneID="PXx-JE-4CY">
             <objects>
-                <viewController id="58Z-9d-zIJ" customClass="SettingsViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="58Z-9d-zIJ" customClass="SettingsViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kv9-Vh-25c">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -392,7 +392,7 @@
         <!--Tier View Controller-->
         <scene sceneID="f4C-dW-Y5x">
             <objects>
-                <tableViewController id="VD0-C8-Quq" customClass="TierViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="VD0-C8-Quq" customClass="TierViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Efy-yl-ejh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -413,10 +413,10 @@
                             </connections>
                         </button>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="128" id="nlC-tL-tdi" userLabel="Cell" customClass="TierTableViewCell" customModule="Tierodactyl" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="128" id="nlC-tL-tdi" userLabel="Cell" customClass="TierTableViewCell" customModule="ptierodactyl" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="414" height="128"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nlC-tL-tdi" id="ne4-Gc-525" customClass="CellClass" customModule="Tierodactyl" customModuleProvider="target">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nlC-tL-tdi" id="ne4-Gc-525" customClass="CellClass" customModule="ptierodactyl" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -425,17 +425,17 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="lRl-PG-IFy">
-                                                <size key="itemSize" width="50" height="50"/>
+                                                <size key="itemSize" width="100" height="50"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ViewCell" id="YMH-x2-se3" customClass="CollectionViewCell" customModule="Tierodactyl" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ViewCell" id="YMH-x2-se3" customClass="CollectionViewCell" customModule="ptierodactyl" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                                     <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="p2w-m5-ene">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </collectionViewCellContentView>
                                                 </collectionViewCell>
@@ -459,7 +459,7 @@
         <!--Your Lists-->
         <scene sceneID="UUN-Tu-jnZ">
             <objects>
-                <viewController id="eZK-EQ-H3P" customClass="HomeScreenViewController" customModule="Tierodactyl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="eZK-EQ-H3P" customClass="HomeScreenViewController" customModule="ptierodactyl" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bl5-5R-Mld">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
