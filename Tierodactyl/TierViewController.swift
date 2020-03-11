@@ -209,24 +209,24 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
-            UIAlertController.Style.alert)
-        
-        alert.addTextField(configurationHandler: textFieldHandler)
-        
-        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
-            //i need to clear original subview!
-            collectionView.cellForItem(at: indexPath)?.contentView.addSubview((alert.textFields?.first!)!)
-        }))
-        
-        self.present(alert, animated: true, completion:nil)
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+//            UIAlertController.Style.alert)
+//
+//        alert.addTextField(configurationHandler: textFieldHandler)
+//
+//        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+//
+//        }))
+//
+//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+//            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
+//            //i need to clear original subview!
+//            collectionView.cellForItem(at: indexPath)?.contentView.addSubview((alert.textFields?.first!)!)
+//        }))
+//
+//        self.present(alert, animated: true, completion:nil)
+//    }
     
     func textFieldHandler(textField: UITextField!)
     {
