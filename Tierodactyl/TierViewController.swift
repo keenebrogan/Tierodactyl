@@ -8,16 +8,13 @@
 
 
 //current issues
-//1. can't change cell size... why???
-//2. adding text to a cell is acting really weird so thing about that
-//3. dragginng cells and keeping text only works sometimes.....
+//1. dragging, label only stays once
+//2. adding label is still acting weird...
+//3. going to start being able to edit a cells text soon
 
 import UIKit
 
 class TierViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
-    
-   
-    
     
     //keeps track of how many rows to print out - needed because array is optional
     var counter = 0
@@ -28,6 +25,8 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     var collection = IndividualCollectionView(frame: CGRect(x: 0, y: 0, width: 1, height: 1), collectionViewLayout: UICollectionViewFlowLayout())
     
     var source = IndexPath()
+    
+    var string = UIView()
     
     var numbers = [0]
     
@@ -59,15 +58,15 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         cell.layer.cornerRadius = 10
         cell.backgroundColor = .green
         cell.setProps()
-       // cell.text.text = "AH!"
-      //  cell.addSubview(cell.text)
-//        cell.text.translatesAutoresizingMaskIntoConstraints = false
-//        cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
-//        cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
+        // cell.text.text = "AH!"
+        //  cell.addSubview(cell.text)
+        //        cell.text.translatesAutoresizingMaskIntoConstraints = false
+        //        cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
+        //        cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
         
         
         
-       // cellHolder = cell
+        // cellHolder = cell
         
         return cell
         
@@ -78,6 +77,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         //this collectionview is what you are dragging from
         collection = collectionView as! IndividualCollectionView
         source = indexPath
+        string = collectionView.cellForItem(at: indexPath)!.contentView
         
         let item = ""
         let itemProvider = NSItemProvider(object: item as NSString)
@@ -96,35 +96,32 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         if let item = coordinator.items.first{
             
             
+            
             collectionView.reloadData()
             collection.reloadData()
             
-            
-            //new one
-            collectionView.performBatchUpdates({
-                collectionView.insertItems(at: [destinationIndexPath])
-                collectionView.count+=1
-            }, completion: nil)
-            
-            collectionView.reloadData()
-            
-            //DOESNT WORK WHEN DRAGGING TO EMPTY ROW!!!!!!!!!!!!!!!!!!!!
-           
-            var newCell = collectionView.cellForItem(at: destinationIndexPath) as! CollectionViewCell
-        
-            var oldCellText = ""
-            
-            //old one
-            collection.performBatchUpdates({
+            if collectionView == collection{
                 
-                oldCellText = (collection.cellForItem(at: source) as! CollectionViewCell).text.text!
+                collectionView.moveItem(at: source, to: destinationIndexPath)
                 
-                collection.deleteItems(at: [source])
+                collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
                 
-                collection.count-=1
-            }, completion: nil)
-            
-            newCell.text.text = oldCellText
+                collectionView.reloadData()
+            }
+                
+            else{
+                collectionView.performBatchUpdates({
+                    collectionView.insertItems(at: [destinationIndexPath])
+                    collectionView.count+=1
+                }, completion: nil)
+                
+                collection.performBatchUpdates({
+                    collectionView.deleteItems(at: [source])
+                    collection.count-=1
+                }, completion: nil)
+                
+                collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
+            }
             
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             
@@ -167,35 +164,38 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
     }
     
-   
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.cells[indexPath.row].count+=1
-        self.cells[indexPath.row].reloadData()
-        self.tableView.reloadData()
-         
-
+        
+        cells[indexPath.row].count+=1
+        cells[indexPath.row].reloadData()
+        tableView.reloadData()
+        
         let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
             UIAlertController.Style.alert)
-
+        
         alert.addTextField(configurationHandler: textFieldHandler)
-
-       
         
         alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-
-            var location = self.cells[indexPath.row].indexPath(for: self.cells[indexPath.row].visibleCells.last!)!
             
-            var cell = self.cells[indexPath.row].cellForItem(at: location) as! CollectionViewCell
+            var location = IndexPath(row: self.cells[indexPath.row].count-1, section: 0)
+            
+            var cell = self.cells[indexPath.row].cellForItem(at: location)
             
             let label = UILabel()
             label.text = (alert.textFields?.first!.text)!
             
-            cell.text = label
-            cell.setProps()
-        
+            label.font = UIFont(name: "Times New Roman", size: 20)
+            label.textColor = .black
+            label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            
+            
+            cell!.contentView.addSubview(label)
+            
             self.cells[indexPath.row].reloadData()
             self.tableView.reloadData()
+            
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
@@ -203,10 +203,29 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
             self.cells[indexPath.row].reloadData()
             self.tableView.reloadData()
         }))
-
-
+        
+        
         self.present(alert, animated: true, completion:nil)
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+            UIAlertController.Style.alert)
+        
+        alert.addTextField(configurationHandler: textFieldHandler)
+        
+        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
+            //i need to clear original subview!
+            collectionView.cellForItem(at: indexPath)?.contentView.addSubview((alert.textFields?.first!)!)
+        }))
+        
+        self.present(alert, animated: true, completion:nil)
     }
     
     func textFieldHandler(textField: UITextField!)
