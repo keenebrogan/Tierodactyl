@@ -8,9 +8,8 @@
 
 
 //current issues
-//1. dragging, label only stays once
-//2. adding label is still acting weird...
-//3. going to start being able to edit a cells text soon
+//1. cant change cell size
+//2.dragging doesnt work more than once??
 
 import UIKit
 
@@ -104,9 +103,6 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
                 
                 collectionView.moveItem(at: source, to: destinationIndexPath)
                 
-                collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
-                
-                collectionView.reloadData()
             }
                 
             else{
@@ -119,9 +115,11 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
                     collectionView.deleteItems(at: [source])
                     collection.count-=1
                 }, completion: nil)
-                
-                collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
             }
+            
+            
+            collectionView.cellForItem(at: destinationIndexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
+            collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
             
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             
@@ -204,29 +202,40 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
             self.tableView.reloadData()
         }))
         
-        
         self.present(alert, animated: true, completion:nil)
         
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
-//            UIAlertController.Style.alert)
-//
-//        alert.addTextField(configurationHandler: textFieldHandler)
-//
-//        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-//
-//        }))
-//
-//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-//            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
-//            //i need to clear original subview!
-//            collectionView.cellForItem(at: indexPath)?.contentView.addSubview((alert.textFields?.first!)!)
-//        }))
-//
-//        self.present(alert, animated: true, completion:nil)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+            UIAlertController.Style.alert)
+
+        alert.addTextField(configurationHandler: textFieldHandler)
+
+        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+           
+            let label = UILabel()
+           label.text = (alert.textFields?.first!.text)!
+           
+           label.font = UIFont(name: "Times New Roman", size: 20)
+           label.textColor = .black
+           label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+           
+            
+            collectionView.cellForItem(at: indexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
+                       collectionView.cellForItem(at: indexPath)?.contentView.addSubview(label)
+                       collectionView.reloadData()
+        }))
+
+       
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
+            //i need to clear original subview!
+           
+        }))
+
+        self.present(alert, animated: true, completion:nil)
+    }
     
     func textFieldHandler(textField: UITextField!)
     {
