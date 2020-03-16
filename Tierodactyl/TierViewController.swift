@@ -8,8 +8,7 @@
 
 
 //current issues
-//1. cant change cell size
-//2.dragging doesnt work more than once??
+//THE LAEBELLLLLSSS
 
 import UIKit
 
@@ -50,13 +49,10 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ViewCell", for: indexPath) as! CollectionViewCell
-        
-        var collection = collectionView as! IndividualCollectionView
-        
-        
+
         cell.layer.cornerRadius = 10
         cell.backgroundColor = .green
-        cell.setProps()
+       
         // cell.text.text = "AH!"
         //  cell.addSubview(cell.text)
         //        cell.text.translatesAutoresizingMaskIntoConstraints = false
@@ -94,36 +90,33 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
         if let item = coordinator.items.first{
             
-            
-            
-            collectionView.reloadData()
             collection.reloadData()
-            
+            collectionView.reloadData()
+                           
             if collectionView == collection{
-                
+                collectionView.reloadData()
                 collectionView.moveItem(at: source, to: destinationIndexPath)
-                
             }
                 
             else{
+
                 collectionView.performBatchUpdates({
-                    collectionView.insertItems(at: [destinationIndexPath])
                     collectionView.count+=1
+                    collectionView.insertItems(at: [destinationIndexPath])
                 }, completion: nil)
                 
                 collection.performBatchUpdates({
-                    collectionView.deleteItems(at: [source])
                     collection.count-=1
+                    collection.deleteItems(at: [source])
                 }, completion: nil)
+                
             }
             
-            
             collectionView.cellForItem(at: destinationIndexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
-            collectionView.cellForItem(at: destinationIndexPath)?.contentView.addSubview(string)
-            
+            collectionView.cellForItem(at: destinationIndexPath)?.addSubview(string)
+        
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
-            
-            
+        
         }
         
         collectionView.reloadData()
@@ -246,7 +239,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     
     //sets row height for each table view row
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0;//Choose your custom row height
+        return 110.0;//Choose your custom row height
     }
     
     //creates a row for the table view
@@ -255,14 +248,16 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = CGSize(width: 100, height: 100)
         
         
         if cells.count > 0{
             var cell = cells.last
             cell?.register(CollectionViewCell.self, forCellWithReuseIdentifier: "ViewCell")
+            cell!.collectionViewLayout = layout
             cell!.delegate = self
             cell!.dataSource = self
-            cell!.frame = CGRect(x: 0, y: 0, width: 314 , height: 70)
+            cell!.frame = CGRect(x: 0, y: 0, width: 314 , height: 110)
             cell!.backgroundColor = .white
             cell!.allowsSelection = true
             cell!.dragInteractionEnabled = true

@@ -11,5 +11,5 @@ import UIKit
 class IndividualCollectionView: UICollectionView {
 
     var count = 0
-
+    
 }
