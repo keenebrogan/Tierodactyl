@@ -8,7 +8,7 @@
 
 
 //current issues
-//THE LAEBELLLLLSSS
+//cant drag to the end of a row
 
 import UIKit
 
@@ -97,14 +97,24 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
                 collectionView.reloadData()
                 collectionView.moveItem(at: source, to: destinationIndexPath)
             }
-                
+            
             else{
-
                 collectionView.performBatchUpdates({
-                    collectionView.count+=1
-                    collectionView.insertItems(at: [destinationIndexPath])
+                  
+                    if collectionView.count == 0{
+                        collectionView.count+=1
+                       // collectionView.reloadData()
+                        collectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+                    }
+                    
+                    else{
+                        collectionView.count+=1
+                        //collectionView.reloadData()
+                        collectionView.insertItems(at: [destinationIndexPath])
+                    }
+                    
                 }, completion: nil)
-                
+            
                 collection.performBatchUpdates({
                     collection.count-=1
                     collection.deleteItems(at: [source])
@@ -133,8 +143,9 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
             destinationIndexPath = indexPath
         }
         else{
-            let row = collectionView.numberOfItems(inSection: 0)
+            let row = collection.numberOfItems(inSection: 0)
             destinationIndexPath = IndexPath(item: row - 1, section: 0)
+            print(destinationIndexPath.row)
         }
         
         if coordinator.proposal.operation == .move{
@@ -205,6 +216,21 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
 
         alert.addTextField(configurationHandler: textFieldHandler)
 
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
+            //i need to clear original subview!
+           
+        }))
+
+        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+            let collect = collectionView as! IndividualCollectionView
+            
+            collect.count-=1
+            collect.deleteItems(at: [indexPath])
+           
+           
+        }))
+        
         alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
            
             let label = UILabel()
@@ -220,14 +246,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
                        collectionView.reloadData()
         }))
 
-       
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
-            //i need to clear original subview!
-           
-        }))
-
-        self.present(alert, animated: true, completion:nil)
+               self.present(alert, animated: true, completion:nil)
     }
     
     func textFieldHandler(textField: UITextField!)
