@@ -10,6 +10,8 @@ import UIKit
 
 class HomeScreenTableViewCell: UITableViewCell{
 
+    
+    var cellbutton = UIButton()
     var views: [IndividualCollectionView] = []
     //array of individuual collection view
     override func awakeFromNib() {
