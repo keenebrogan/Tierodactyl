@@ -153,13 +153,13 @@
 				03F6280523FDDF6500EBBF94 /* TierViewController.swift */,
 				5F2038F8240E8897007F6A61 /* IndividualCollectionView.swift */,
 				5F49665C2405AD90003E70A0 /* addViewController.swift */,
-				5F48FC8524044A4C00F195E2 /* GoogleService-Info.plist */,
 				5F9C1C342409BA5D002018D4 /* TierTableViewCell.swift */,
 				5F9C1C362409F155002018D4 /* CollectionViewCell.swift */,
 				03F6280723FDDF8F00EBBF94 /* SettingsViewController.swift */,
 				5F8658C723FC5D4A00D3E997 /* Main.storyboard */,
 				5F8658CA23FC5D4C00D3E997 /* Assets.xcassets */,
 				5F8658CC23FC5D4C00D3E997 /* LaunchScreen.storyboard */,
+				5F48FC8524044A4C00F195E2 /* GoogleService-Info.plist */,
 				5F8658CF23FC5D4C00D3E997 /* Info.plist */,
 			);
 			path = Tierodactyl;
@@ -562,7 +562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.s013419constraints.Tierodactyl;
+				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl;
 				PRODUCT_NAME = ptierodactyl;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
