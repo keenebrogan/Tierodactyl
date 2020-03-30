@@ -52,17 +52,7 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
 
         cell.layer.cornerRadius = 10
         cell.backgroundColor = .green
-       
-        // cell.text.text = "AH!"
-        //  cell.addSubview(cell.text)
-        //        cell.text.translatesAutoresizingMaskIntoConstraints = false
-        //        cell.text.heightAnchor.constraint(equalToConstant: cell.frame.height).isActive = true
-        //        cell.text.widthAnchor.constraint(equalToConstant: cell.frame.width).isActive = true
-        
-        
-        
-        // cellHolder = cell
-        
+
         return cell
         
     }
@@ -105,6 +95,11 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
                         collectionView.count+=1
                        // collectionView.reloadData()
                         collectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+                    }
+                        
+                    else if collectionView.count == destinationIndexPath.row+1{
+                        collectionView.count+=1
+                        collectionView.insertItems(at: [IndexPath(row: collectionView.count-1, section: 0)])
                     }
                     
                     else{
@@ -169,46 +164,50 @@ class TierViewController: UITableViewController, UICollectionViewDelegate, UICol
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
         cells[indexPath.row].count+=1
+        print(cells[indexPath.row].count)
         cells[indexPath.row].reloadData()
+        
         tableView.reloadData()
         
-        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
-            UIAlertController.Style.alert)
-        
-        alert.addTextField(configurationHandler: textFieldHandler)
-        
-        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            
-            var location = IndexPath(row: self.cells[indexPath.row].count-1, section: 0)
-            
-            var cell = self.cells[indexPath.row].cellForItem(at: location)
-            
-            let label = UILabel()
-            label.text = (alert.textFields?.first!.text)!
-            
-            label.font = UIFont(name: "Times New Roman", size: 20)
-            label.textColor = .black
-            label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-            
-            
-            cell!.contentView.addSubview(label)
-            
-            self.cells[indexPath.row].reloadData()
-            self.tableView.reloadData()
-            
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            self.cells[indexPath.row].count-=1
-            self.cells[indexPath.row].reloadData()
-            self.tableView.reloadData()
-        }))
-        
-        self.present(alert, animated: true, completion:nil)
+//        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
+//            UIAlertController.Style.alert)
+//
+//        alert.addTextField(configurationHandler: textFieldHandler)
+//
+//        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+//
+//            var location = IndexPath(row: self.cells[indexPath.row].count-1, section: 0)
+//            var cell = self.cells[indexPath.row].cellForItem(at: location)
+//
+//            let label = UILabel()
+//            label.text = (alert.textFields?.first!.text)!
+//
+//            label.font = UIFont(name: "Times New Roman", size: 20)
+//            label.textColor = .black
+//            label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+//
+//            cell!.contentView.addSubview(label)
+//
+//            self.cells[indexPath.row].reloadData()
+//            self.tableView.reloadData()
+//
+//        }))
+//
+//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+//            self.cells[indexPath.row].count-=1
+//            self.cells[indexPath.row].reloadData()
+//            self.tableView.reloadData()
+//        }))
+//
+//        self.present(alert, animated: true, completion:nil)
         
     }
+    
+    //KEENE KEENE KEENE KEENE MAYBE USE THIS !!
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
