@@ -1,321 +1,288 @@
 //
-//  TierViewController.swift
-//  Tierodactyl
+//  ViewController.swift
+//  multSection
 //
-//  Created by Anne Hamilton (student LM) on 2/19/20.
+//  Created by Margaret Hollis (student LM) on 3/31/20.
 //  Copyright © 2020 Margaret Hollis (student LM). All rights reserved.
 //
 
-
-//current issues
-//cant drag to the end of a row
-
+//need labels to stay on cell when dragged
+//why does it get weird when I reload collection
 import UIKit
 
-class TierViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
+class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+   
+    var secCount = 0
+    var words = [[UILabel]()]
+    var cleared = false
     
-    //keeps track of how many rows to print out - needed because array is optional
-    var counter = 0
-    //array of optional cells, each one represents a row
+    let collection: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 16
+        layout.scrollDirection = .vertical
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        return cv
+    }()
     
-    var cells = [IndividualCollectionView]()
-    
-    var collection = IndividualCollectionView(frame: CGRect(x: 0, y: 0, width: 1, height: 1), collectionViewLayout: UICollectionViewFlowLayout())
-    
-    var source = IndexPath()
-    
-    var string = UIView()
-    
-    var numbers = [0]
-    
-    func ini(_ name: String){
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setUpViews()
         
-        self.navigationItem.title = name
-        cells = []
-        //this is what is displayed at the top
-        //make cells equal to blank array
+        if !cleared {
+            words.removeAll()
+            cleared = true
+        }
+    
     }
     
-    //var cellHolder = CollectionViewCell()
+    override func viewWillLayoutSubviews() {
+       let width = self.view.frame.width
+        let height = self.view.frame.height
+        
+        //minus 40 puts it at the bottom of the screen but looks weird since text is cut off by home screen pull thing
+       let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: height - 75, width: width, height: 75))
+       self.view.addSubview(navigationBar)
+       let navigationItem = UINavigationItem(title: "Navigation bar")
+       let doneBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: nil, action: #selector(addSect))
+       navigationItem.rightBarButtonItem = doneBtn
+        navigationItem.title = "add a tier"
+ 
+       navigationBar.setItems([navigationItem], animated: false)
+        
+    }
     
-    // number of cells in a collectionview, this will be made similar to corresponding class in TierVC
-    //when we create funcationality to add elements to each row
+    func setUpViews(){
+        collection.delegate = self
+        collection.dataSource = self
+        collection.dragDelegate = self
+        collection.dropDelegate = self
+        collection.dragInteractionEnabled = true
+        
+        collection.register(firstCell.self, forCellWithReuseIdentifier: "cell")
+       
+        collection.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "header")
+        
+        view.addSubview(collection)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collection.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        collection.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        collection.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 60)
+    }
+    
+   
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+      
+        if kind == UICollectionView.elementKindSectionHeader {
+            let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
+            sectionHeader.label.text = String(indexPath.section + 1)
+            sectionHeader.backgroundColor = .gray
+            
+            var button = UIButton()
+            
+            view.addSubview(button)
+            
+            button.setTitle("ADD CELL", for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIColor.gray
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+           
+            button.addTarget(self, action: #selector(addCell), for: .touchUpInside)
+            //HOW DO I ASS ADDCELL THE INDEXPATHHHHHHHHHH
+            
+            
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.topAnchor.constraint(equalTo: sectionHeader.topAnchor).isActive = true
+            button.leftAnchor.constraint(equalTo: sectionHeader.label.rightAnchor).isActive = true
+            button.rightAnchor.constraint(equalTo: sectionHeader.rightAnchor).isActive = true
+            button.bottomAnchor.constraint(equalTo: sectionHeader.bottomAnchor).isActive = true
+        
+             return sectionHeader
+        } else { //No footer in this case but can add option for that
+             return UICollectionReusableView()
+        }
+    }
+    
+    @objc func addCell(){
+       // words[indexPath.section].append(UILabel())
+        collection.reloadData()
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return secCount
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var collection = collectionView as! IndividualCollectionView
-        
-        return  collection.count //need separate value for each collectionview
-        
+        return words[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ViewCell", for: indexPath) as! CollectionViewCell
 
-        cell.layer.cornerRadius = 10
-        cell.backgroundColor = .green
-
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! firstCell
         
+        cell.contentView.addSubview(words[indexPath.section][indexPath.row])
+      
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        return CGSize(width: (view.frame.width / 3) - 16, height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 0, bottom: 30, right: 0)
+    }
+    
+    //adding text/editing a cell
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+       
+        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+                   UIAlertController.Style.alert)
+
+               alert.addTextField(configurationHandler: textFieldHandler)
+
+               alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+                   
+               }))
+
+               alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+                
+                    collectionView.cellForItem(at: indexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
+                 
+                    let cell = collectionView.cellForItem(at: indexPath) as! firstCell
+                
+                    let label = UILabel()
+                    label.text = (alert.textFields?.first!.text)!
+                        
+                    label.font = UIFont(name: "Times New Roman", size: 30)
+                    label.textColor = .black
+                    label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+                        
+                    self.words[indexPath.section][indexPath.row] = label
+                    collectionView.reloadData()
+    
+               }))
+
+            self.present(alert, animated: true, completion:nil)
+    }
+    
+    func textFieldHandler(textField: UITextField!) {
+        if (textField) != nil {
+               textField.text = ""
+        }
+    }
+    
+    
+    //drag and drop stuff
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+           var destinationIndexPath: IndexPath
+        
+           if let indexPath = coordinator.destinationIndexPath{
+               destinationIndexPath = indexPath
+           }
+           else{
+            let row = collectionView.numberOfItems(inSection: 0)
+               destinationIndexPath = IndexPath(row: row - 1, section: 0)
+           }
+           
+           if coordinator.proposal.operation == .move{
+               self.reorderItems(coordinator: coordinator, destinationIndexPath: destinationIndexPath, collectionView: collectionView)
+           
+           }
+    }
+    
+    fileprivate func reorderItems(coordinator: UICollectionViewDropCoordinator, destinationIndexPath:IndexPath, collectionView: UICollectionView){
+       
+        if let item = coordinator.items.first,
+            let sourceIndexPath = item.sourceIndexPath{
+          
+            collectionView.performBatchUpdates({
+               
+                collectionView.moveItem(at: sourceIndexPath, to: destinationIndexPath)
+                
+                words[destinationIndexPath.section].insert(words[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
+                words[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+                
+                }, completion: nil)
+            
+             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        if collectionView.hasActiveDrag{
+            return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        
+        return UICollectionViewDropProposal(operation: .forbidden)
     }
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         
-        //this collectionview is what you are dragging from
-        collection = collectionView as! IndividualCollectionView
-        source = indexPath
-        string = collectionView.cellForItem(at: indexPath)!.contentView
-        
-        let item = ""
-        let itemProvider = NSItemProvider(object: item as NSString)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        dragItem.localObject = item
-        return [dragItem]
-    }
+           let item = String(indexPath.row + 1)
+           let itemProvider = NSItemProvider(object: item as NSString)
+           let dragItem = UIDragItem(itemProvider: itemProvider)
+           dragItem.localObject = item
+           return [dragItem]
+       }
     
-    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        
-        return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-    }
-    
-    fileprivate func reorderItems(coordinator: UICollectionViewDropCoordinator, destinationIndexPath:IndexPath, collectionView: IndividualCollectionView){
-        
-        if let item = coordinator.items.first{
-            
-            collection.reloadData()
-            collectionView.reloadData()
-                           
-            if collectionView == collection{
-                collectionView.reloadData()
-                collectionView.moveItem(at: source, to: destinationIndexPath)
-            }
-            
-            else{
-                collectionView.performBatchUpdates({
-                  
-                    if collectionView.count == 0{
-                        collectionView.count+=1
-                       // collectionView.reloadData()
-                        collectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
-                    }
-                        
-                    else if collectionView.count == destinationIndexPath.row+1{
-                        collectionView.count+=1
-                        collectionView.insertItems(at: [IndexPath(row: collectionView.count-1, section: 0)])
-                    }
-                    
-                    else{
-                        collectionView.count+=1
-                        //collectionView.reloadData()
-                        collectionView.insertItems(at: [destinationIndexPath])
-                    }
-                    
-                }, completion: nil)
-            
-                collection.performBatchUpdates({
-                    collection.count-=1
-                    collection.deleteItems(at: [source])
-                }, completion: nil)
-                
-            }
-            
-            collectionView.cellForItem(at: destinationIndexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
-            collectionView.cellForItem(at: destinationIndexPath)?.addSubview(string)
-        
-            coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
-        
+  
+     @objc func addSect(){
+           secCount+=1
+           words.append([])
+           words[words.count-1].removeAll()
+           collection.reloadData()
         }
-        
-        collectionView.reloadData()
-        collection.reloadData()
-    }
-    
-    
-    
-    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        var destinationIndexPath: IndexPath
-        
-        
-        if let indexPath = coordinator.destinationIndexPath{
-            destinationIndexPath = indexPath
-        }
-        else{
-            let row = collection.numberOfItems(inSection: 0)
-            destinationIndexPath = IndexPath(item: row - 1, section: 0)
-            print(destinationIndexPath.row)
-        }
-        
-        if coordinator.proposal.operation == .move{
-            self.reorderItems(coordinator: coordinator, destinationIndexPath: destinationIndexPath, collectionView: collectionView as! IndividualCollectionView)
-        }
-    }
-    
-    //this is called when you press the plus button, it adds another row
-    @IBAction func add(_ sender: UIBarButtonItem) {
-        counter+=1
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        
-        cells.append(IndividualCollectionView(frame: view.bounds, collectionViewLayout: layout))
-        
-        // cells.append(IndividualCollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout()))
-        self.tableView.reloadData()
-        
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        cells[indexPath.row].count+=1
-        print(cells[indexPath.row].count)
-        cells[indexPath.row].reloadData()
-        
-        tableView.reloadData()
-        
-//        let alert = UIAlertController(title: "New Cell", message: "", preferredStyle:
-//            UIAlertController.Style.alert)
-//
-//        alert.addTextField(configurationHandler: textFieldHandler)
-//
-//        alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-//
-//            var location = IndexPath(row: self.cells[indexPath.row].count-1, section: 0)
-//            var cell = self.cells[indexPath.row].cellForItem(at: location)
-//
-//            let label = UILabel()
-//            label.text = (alert.textFields?.first!.text)!
-//
-//            label.font = UIFont(name: "Times New Roman", size: 20)
-//            label.textColor = .black
-//            label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-//
-//            cell!.contentView.addSubview(label)
-//
-//            self.cells[indexPath.row].reloadData()
-//            self.tableView.reloadData()
-//
-//        }))
-//
-//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-//            self.cells[indexPath.row].count-=1
-//            self.cells[indexPath.row].reloadData()
-//            self.tableView.reloadData()
-//        }))
-//
-//        self.present(alert, animated: true, completion:nil)
-        
-    }
-    
-    //KEENE KEENE KEENE KEENE MAYBE USE THIS !!
-//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        <#code#>
-//    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
-            UIAlertController.Style.alert)
-
-        alert.addTextField(configurationHandler: textFieldHandler)
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            //collectionView.cellForItem(at: indexPath)?.contentView.subvo
-            //i need to clear original subview!
-           
-        }))
-
-        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-            let collect = collectionView as! IndividualCollectionView
-            
-            collect.count-=1
-            collect.deleteItems(at: [indexPath])
-           
-           
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Done", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-           
-            let label = UILabel()
-           label.text = (alert.textFields?.first!.text)!
-           
-           label.font = UIFont(name: "Times New Roman", size: 20)
-           label.textColor = .black
-           label.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-           
-            
-            collectionView.cellForItem(at: indexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
-                       collectionView.cellForItem(at: indexPath)?.contentView.addSubview(label)
-                       collectionView.reloadData()
-        }))
-
-               self.present(alert, animated: true, completion:nil)
-    }
-    
-    func textFieldHandler(textField: UITextField!)
-    {
-        if (textField) != nil {
-            textField.text = ""
-        }
-    }
-    
-    //sets row height for each table view row
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0;//Choose your custom row height
-    }
-    
-    //creates a row for the table view
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //basically makes even rows green and odd system green
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = CGSize(width: 100, height: 100)
-        
-        
-        if cells.count > 0{
-            var cell = cells.last
-            cell?.register(CollectionViewCell.self, forCellWithReuseIdentifier: "ViewCell")
-            cell!.collectionViewLayout = layout
-            cell!.delegate = self
-            cell!.dataSource = self
-            cell!.frame = CGRect(x: 0, y: 0, width: 314 , height: 110)
-            cell!.backgroundColor = .white
-            cell!.allowsSelection = true
-            cell!.dragInteractionEnabled = true
-            cell!.dragDelegate = self
-            cell!.dropDelegate = self
-            //cell?.addArr(sort()[indexPath.row])
-            
-            
-            var table = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as! IndexPath) as! TierTableViewCell
-            
-            table.backgroundColor = .systemGray
-            table.addSubview(cell!)
-            return table
-        }
-        
-        return tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as! IndexPath) as! TierTableViewCell
-        
-    }
-    
-    //when the table view is reloaed this sets the number of rows there will be
-    //counter keeps track of the number of rows in the array of cells and returns it
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return counter
-    }
-    
-    //this is completley irrelevant, just keep it at one
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    
-    //also has no current function
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.allowsSelection=true
-        
-        
-    }
-    
 }
+
+class firstCell: UICollectionViewCell{
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .systemBlue
+        layer.cornerRadius = 10
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+class SectionHeader: UICollectionReusableView {
+     var label: UILabel = {
+     let label: UILabel = UILabel()
+     label.textColor = .white
+     label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+     label.sizeToFit()
+     return label
+ }()
+
+override init(frame: CGRect) {
+     super.init(frame: frame)
+
+     addSubview(label)
+
+     label.translatesAutoresizingMaskIntoConstraints = false
+     label.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+     label.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+    label.rightAnchor.constraint(equalTo: self.leftAnchor, constant: 100).isActive = true
+}
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 
 
