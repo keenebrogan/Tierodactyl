@@ -25,9 +25,16 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return cv
     }()
     
+    @IBOutlet var longPressGesture: UILongPressGestureRecognizer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
+        collection.addGestureRecognizer(longPressGesture)
+        
+        
         setUpViews()
         
         if !cleared {
@@ -94,7 +101,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
            
             button.addTarget(self, action: #selector(addCell), for: .touchUpInside)
-            //HOW DO I ASS ADDCELL THE INDEXPATHHHHHHHHHH
+            //HOW DO I ADD ADDCELL THE INDEXPATHHHHHHHHHH
             
             
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -238,10 +245,100 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
   
      @objc func addSect(){
            secCount+=1
-           words.append([])
-           words[words.count-1].removeAll()
+           words.append([UILabel(),UILabel()])
+        //   words[words.count-1].removeAll()
            collection.reloadData()
         }
+    
+    //MARK: DELETE CELL FUNCTIONS
+    
+    @objc func longTap(_ gesture: UIGestureRecognizer){
+        
+        switch(gesture.state) {
+        case .began:
+            guard let selectedIndexPath = collection.indexPathForItem(at: gesture.location(in: collection)) else {
+                return
+            }
+            collection.beginInteractiveMovementForItem(at: selectedIndexPath)
+        case .changed:
+            collection.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
+        case .ended:
+            collection.endInteractiveMovement()
+//MARK: ADD LATER            doneBtn.isHidden = false
+ //           longPressedEnabled = true
+            self.collection.reloadData()
+        default:
+            collection.cancelInteractiveMovement()
+        }
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SmallImgCell.identifier, for: indexPath) as! SmallImgCell
+//        cell.backgroundColor = UIColor.clear
+//
+//        cell.imgView.image = UIImage(named: "\(imgArr[indexPath.row])")
+//
+////        cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
+//
+////        if longPressedEnabled   {
+////            cell.startAnimate()
+////        }else{
+////            cell.stopAnimate()
+////        }
+//
+//        return cell
+//    }
+    
+//
+//    func startAnimate() {
+//        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
+//        shakeAnimation.duration = 0.05
+//        shakeAnimation.repeatCount = 4
+//        shakeAnimation.autoreverses = true
+//        shakeAnimation.duration = 0.2
+//        shakeAnimation.repeatCount = 99999
+//
+//        let startAngle: Float = (-2) * 3.14159/180
+//        let stopAngle = -startAngle
+//
+//        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
+//        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
+//        shakeAnimation.autoreverses = true
+//        shakeAnimation.timeOffset = 290 * drand48()
+//
+//        let layer: CALayer = self.layer
+//        layer.add(shakeAnimation, forKey:"animate")
+//        removeBtn.isHidden = false
+//        isAnimate = true
+//    }
+//
+//
+//    func stopAnimate() {
+//        let layer: CALayer = self.layer
+//        layer.removeAnimation(forKey: "animate")
+//        self.removeBtn.isHidden = true
+//        isAnimate = false
+//    }
+//
+//    @IBAction func removeBtnClick(_ sender: UIButton)   {
+//        let hitPoint = sender.convert(CGPoint.zero, to: self.collection)
+//        let hitIndex = self.imgcollection.indexPathForItem(at: hitPoint)
+//
+//        //remove the image and refresh the collection view
+//        self.imgArr.remove(at: (hitIndex?.row)!)
+//        self.collection.reloadData()
+//    }
+//
+//    @IBAction func doneBtnClick(_ sender: UIButton) {
+//        //disable the shake and hide done button
+//        doneBtn.isHidden = true
+//        longPressedEnabled = false
+//
+//        self.collection.reloadData()
+//    }
+    
+    
+    
 }
 
 class firstCell: UICollectionViewCell{
@@ -283,6 +380,10 @@ override init(frame: CGRect) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
+
+
 
 
 
