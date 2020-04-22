@@ -16,7 +16,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var secCount = 0
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
-   
+    var cleared = false
     
     //creating the collection view, adding some basc formatting, more later
     let collection: UICollectionView = {
@@ -33,11 +33,17 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
+        //KEEEENEEEE I COMMENTED THIS OUT BECAUSE IT WAS CAUSING AN ERROR AND IDK HOW TO FIX IT
+      //  longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
         collection.addGestureRecognizer(longPressGesture)
         
         setUpViews()
+        
+        //just makes sure that words is empty, kinda messed up without this...
+        if !cleared {
+            words.removeAll()
+            cleared = true
+        }
         
     
     }
@@ -170,8 +176,6 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 
                 //clears the view so no overlappign labels
                     collectionView.cellForItem(at: indexPath)?.contentView.subviews.forEach({ $0.removeFromSuperview() })
-                 //creates a variable for the cell, shorter and easier to use later
-                    let cell = collectionView.cellForItem(at: indexPath) as! firstCell
                 
                 //a stand in label that will be used to put the text on the cell
                     let label = UILabel()
@@ -189,6 +193,14 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                }))
 
             self.present(alert, animated: true, completion:nil)
+    }
+    
+    
+    //sets up the text field for the alert
+    func textFieldHandler(textField: UITextField!) {
+        if (textField) != nil {
+               textField.text = ""
+        }
     }
     
  
@@ -247,12 +259,17 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return UICollectionViewDropProposal(operation: .forbidden)
     }
     
+    //DOES THIS HAVE ANYTHING TODO WITH LABELS BEING MESSED UP?
     //identifies what is being dragged
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        
+        var item = ""
         //testing something new out, might now work
-           let item = words[indexPath.section][indexPath.row]//String(indexPath.row + 1)
-           let itemProvider = NSItemProvider(object: item as NSString)
+        
+        if words[indexPath.section][indexPath.row].text != nil{
+            item = words[indexPath.section][indexPath.row].text!
+        }
+        //String(indexPath.row + 1)
+        let itemProvider = NSItemProvider(object: item as! NSString)
            let dragItem = UIDragItem(itemProvider: itemProvider)
            dragItem.localObject = item
            return [dragItem]
@@ -271,7 +288,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //reloads everything
                       alert.addAction(UIAlertAction(title: "Add Tier", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                         self.secCount+=1
-                        self.words.append([UILabel()})
+                        self.words.append([UILabel()])
                         self.collection.reloadData()
                            
                       }))
