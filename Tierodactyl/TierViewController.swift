@@ -54,7 +54,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
        let navigationItem = UINavigationItem(title: "Navigation bar")
        let doneBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: nil, action: #selector(addSect))
        navigationItem.rightBarButtonItem = doneBtn
-        navigationItem.title = "add a tier"
+        navigationItem.title = "add a tier or cell"
  
        navigationBar.setItems([navigationItem], animated: false)
         
@@ -91,35 +91,14 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             sectionHeader.label.text = String(indexPath.section + 1)
             sectionHeader.backgroundColor = .gray
             
-            var button = UIButton()
-            
-            view.addSubview(button)
-            
-            button.setTitle("ADD CELL", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = UIColor.gray
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-           
-            button.addTarget(self, action: #selector(addCell), for: .touchUpInside)
-            //HOW DO I ADD ADDCELL THE INDEXPATHHHHHHHHHH
-            
-            
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.topAnchor.constraint(equalTo: sectionHeader.topAnchor).isActive = true
-            button.leftAnchor.constraint(equalTo: sectionHeader.label.rightAnchor).isActive = true
-            button.rightAnchor.constraint(equalTo: sectionHeader.rightAnchor).isActive = true
-            button.bottomAnchor.constraint(equalTo: sectionHeader.bottomAnchor).isActive = true
+
         
              return sectionHeader
         } else { //No footer in this case but can add option for that
              return UICollectionReusableView()
         }
     }
-    
-    @objc func addCell(){
-       // words[indexPath.section].append(UILabel())
-        collection.reloadData()
-    }
+
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return secCount
@@ -133,9 +112,17 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! firstCell
         
+        setUpLabel(indexPath, cell)
         cell.contentView.addSubview(words[indexPath.section][indexPath.row])
       
         return cell
+    }
+    
+    func setUpLabel(_ indexPath: IndexPath, _ cell: firstCell){
+        words[indexPath.section][indexPath.row].lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
+        words[indexPath.section][indexPath.row].numberOfLines = 0
+        words[indexPath.section][indexPath.row].frame = CGRect(x: 5, y: 0, width: cell.frame.width-5, height: cell.frame.height)
+        words[indexPath.section][indexPath.row].font = UIFont(name: "Times New Roman", size: 15)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -150,10 +137,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //adding text/editing a cell
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
-        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+        let alert = UIAlertController(title: "Edit Cell", message: "Enter the text you would like to add to this cell", preferredStyle:
                    UIAlertController.Style.alert)
 
                alert.addTextField(configurationHandler: textFieldHandler)
+               alert.textFields?.first!.text = words[indexPath.section][indexPath.row].text
 
                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                    
@@ -244,11 +232,52 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
   
      @objc func addSect(){
-           secCount+=1
-           words.append([UILabel(),UILabel()])
-        //   words[words.count-1].removeAll()
-           collection.reloadData()
+      
+        let alert = UIAlertController(title: "Edit Cell", message: "", preferredStyle:
+                          UIAlertController.Style.alert)
+
+                    //  alert.addTextField(configurationHandler: textFieldHandler)
+
+                      alert.addAction(UIAlertAction(title: "Add Tier", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+                        self.secCount+=1
+                        self.words.append([UILabel(),UILabel()])
+                        self.collection.reloadData()
+                           
+                      }))
+
+                      alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+                         
+                        self.addCell()
+                      
+                      }))
+        
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+
+                    }))
+
+                   self.present(alert, animated: true, completion:nil)
+        
         }
+    
+    func addCell(){
+        let alert = UIAlertController(title: "Edit Cell", message: "Enter the teir you would like to add a cell to", preferredStyle:
+                                        UIAlertController.Style.alert)
+
+            alert.addTextField(configurationHandler: textFieldHandler)
+
+            alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+               
+                guard let index = Int((alert.textFields?.first!.text)!) else {return}
+                
+                if index <= self.words.count{
+                    self.words[index-1].append(UILabel())
+                    self.collection.reloadData()
+                }
+                                   
+            }))
+                       
+            self.present(alert, animated: true, completion:nil)
+    }
     
     //MARK: DELETE CELL FUNCTIONS
     
