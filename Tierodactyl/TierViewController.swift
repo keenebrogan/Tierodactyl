@@ -176,11 +176,17 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //adding text/editing a cell
     //also deleting a cell if "longPressEnabled is true"
+    //MARK: Edit Text/Delete
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
         
         if longPressEnabled{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
+            collection.deleteItems(at: [indexPath])
+            collection.reloadData()
+            self.secCount-=1
+//            self.words.append([UILabel()])
+//            fatalError("You see, it worked.. but it didn't.")
         }
         else{
         //an alert pops up when you click on a cell
