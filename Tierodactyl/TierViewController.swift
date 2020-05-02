@@ -8,6 +8,8 @@
 
 //need labels to stay on cell when dragged
 //why does it get weird when I reload collection
+
+//can only drag cells up, not down
 import UIKit
 
 class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
@@ -17,6 +19,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
     var cleared = false
+    var deleteDoneButton : UIBarButtonItem!
+    var longPressEnabled = false
+    var isAnimate: Bool! = false
+    @IBOutlet weak var removeBtn: UIButton!
+    
     
     //creating the collection view, adding some basc formatting, more later
     let collection: UICollectionView = {
@@ -30,11 +37,16 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @IBOutlet var longPressGesture: UILongPressGestureRecognizer!
     
+
+    
+    
+    
+    //MARK: View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //KEEEENEEEE I COMMENTED THIS OUT BECAUSE IT WAS CAUSING AN ERROR AND IDK HOW TO FIX IT
-      //  longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
+        //adds long press gesture and sends code to "@objc long" method when pressed down
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(long))
         collection.addGestureRecognizer(longPressGesture)
         
         setUpViews()
@@ -45,9 +57,12 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cleared = true
         }
         
+        self.deleteDoneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: nil, action: #selector(TierViewController.doneButtonTouchUp))
+        deleteDoneButton.isEnabled = false
+        
     
     }
-    
+    //MARK: Navigation Items
     //adds a bar to the bottom of the screen that allows the user to add a tier or a cell
     override func viewWillLayoutSubviews() {
        let width = self.view.frame.width
@@ -61,7 +76,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
        let doneBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: nil, action: #selector(addSect))
        navigationItem.rightBarButtonItem = doneBtn
         navigationItem.title = "add a tier or cell"
- 
+        //adds a done button to the bottom left of the navigation controller so that this can be pressed when the cells are getting deleted
+        navigationItem.leftBarButtonItem = deleteDoneButton
+        
         //tells the bar to show the button
        navigationBar.setItems([navigationItem], animated: false)
         
@@ -110,6 +127,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         else { //No footer in this case but can add option for that
              return UICollectionReusableView()
         }
+        
     }
 
 
@@ -141,7 +159,8 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         words[indexPath.section][indexPath.row].lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
         words[indexPath.section][indexPath.row].numberOfLines = 0
         words[indexPath.section][indexPath.row].frame = CGRect(x: 5, y: 0, width: cell.frame.width-5, height: cell.frame.height)
-        words[indexPath.section][indexPath.row].font = UIFont(name: "Times New Roman", size: 15)
+        words[indexPath.section][indexPath.row].font = UIFont(name: "Helvetica", size: 20)
+        words[indexPath.section][indexPath.row].textColor = .white
     }
     
     //this is where you change the cell sizes
@@ -156,8 +175,14 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     //adding text/editing a cell
+    //also deleting a cell if "longPressEnabled is true"
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
+        
+        if longPressEnabled{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        }
+        else{
         //an alert pops up when you click on a cell
         let alert = UIAlertController(title: "Edit Cell", message: "Enter the text you would like to add to this cell", preferredStyle:
                    UIAlertController.Style.alert)
@@ -193,6 +218,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                }))
 
             self.present(alert, animated: true, completion:nil)
+        }
     }
     
     
@@ -269,7 +295,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             item = words[indexPath.section][indexPath.row].text!
         }
         //String(indexPath.row + 1)
-        let itemProvider = NSItemProvider(object: item as! NSString)
+        let itemProvider = NSItemProvider(object: item as NSString)
            let dragItem = UIDragItem(itemProvider: itemProvider)
            dragItem.localObject = item
            return [dragItem]
@@ -311,7 +337,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
 //if the user wants to add a cell (selected above) this function is called
     func addCell(){
-        let alert = UIAlertController(title: "Edit Cell", message: "Enter the teir you would like to add a cell to", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Edit Cell", message: "Enter the tier you would like to add a cell to", preferredStyle: UIAlertController.Style.alert)
 
         //text box so they can say which section they want the cell to be in
             alert.addTextField(configurationHandler: textFieldHandler)
@@ -319,7 +345,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //this is called when they click add cell
             alert.addAction(UIAlertAction(title: "Add Cell", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                
-                //makes sure that the number entered into the textboc is a valid integer
+                //makes sure that the number entered into the textbox is a valid integer
                 guard let index = Int((alert.textFields?.first!.text)!) else {return}
                 
                 //makes sure a corresponding section exists
@@ -334,7 +360,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.present(alert, animated: true, completion:nil)
     }
     
-    //MARK: DELETE CELL FUNCTIONS
+    //MARK: Delete Functions
     
     @objc func longTap(_ gesture: UIGestureRecognizer){
         
@@ -348,61 +374,91 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             collection.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             collection.endInteractiveMovement()
-//MARK: ADD LATER            doneBtn.isHidden = false
+//MARK: Add Later
+  //          doneBtn.isHidden = false
  //           longPressedEnabled = true
             self.collection.reloadData()
         default:
             collection.cancelInteractiveMovement()
         }
     }
+//MARK: Done Button
+    @IBAction func doneButtonTouchUp(deleteDoneButton sender: UIBarButtonItem) {
+        deleteDoneButton.isEnabled = false
+        isAnimate = false
+        
+    }
+
+    @objc func long(){
+        self.deleteDoneButton.isEnabled = true
+        longPressEnabled = true
+        isAnimate = true
+        
+        
+        
+    }
     
+//MARK: Animation
+    //Animation for Collection View Cells
+    func startAnimate() {
+        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        shakeAnimation.duration = 0.05
+        shakeAnimation.repeatCount = 4
+        shakeAnimation.autoreverses = true
+        shakeAnimation.duration = 0.2
+        shakeAnimation.repeatCount = 99999
+
+        let startAngle: Float = (-2) * 3.14159/180
+        let stopAngle = -startAngle
+
+        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
+        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
+        shakeAnimation.autoreverses = true
+        shakeAnimation.timeOffset = 290 * drand48()
+
+        
+        
+//        let layer: CALayer = UIView.layer
+//        UIView.layer.add(shakeAnimation, forKey:"animate")
+        deleteDoneButton.isEnabled = true
+        self.removeBtn.isEnabled = true
+        isAnimate = true
+    }
+    
+    
+    func stopAnimate() {
+//        let layer: CALayer = self.layer
+//        layer.removeAnimation(forKey: "animate")
+        self.deleteDoneButton.isEnabled = false
+        self.removeBtn.isEnabled = false
+        isAnimate = false
+    }
+    
+    
+
+
 //    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SmallImgCell.identifier, for: indexPath) as! SmallImgCell
 //        cell.backgroundColor = UIColor.clear
 //
 //        cell.imgView.image = UIImage(named: "\(imgArr[indexPath.row])")
 //
-////        cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
+//        cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
 //
-////        if longPressedEnabled   {
-////            cell.startAnimate()
-////        }else{
-////            cell.stopAnimate()
-////        }
+//        if longPressedEnabled   {
+//            cell.startAnimate()
+//        }else{
+//            cell.stopAnimate()
+//        }
 //
 //        return cell
 //    }
-    
-//
-//    func startAnimate() {
-//        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
-//        shakeAnimation.duration = 0.05
-//        shakeAnimation.repeatCount = 4
-//        shakeAnimation.autoreverses = true
-//        shakeAnimation.duration = 0.2
-//        shakeAnimation.repeatCount = 99999
-//
-//        let startAngle: Float = (-2) * 3.14159/180
-//        let stopAngle = -startAngle
-//
-//        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
-//        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
-//        shakeAnimation.autoreverses = true
-//        shakeAnimation.timeOffset = 290 * drand48()
-//
-//        let layer: CALayer = self.layer
-//        layer.add(shakeAnimation, forKey:"animate")
-//        removeBtn.isHidden = false
-//        isAnimate = true
-//    }
 //
 //
-//    func stopAnimate() {
-//        let layer: CALayer = self.layer
-//        layer.removeAnimation(forKey: "animate")
-//        self.removeBtn.isHidden = true
-//        isAnimate = false
-//    }
+
+//
+//
+
 //
 //    @IBAction func removeBtnClick(_ sender: UIButton)   {
 //        let hitPoint = sender.convert(CGPoint.zero, to: self.collection)
@@ -420,9 +476,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //
 //        self.collection.reloadData()
 //    }
-    
-    
-    
+//
+//
+//
 }
 
 //a class for the cells, just changes background color and gives a lil curve to the corners
@@ -447,7 +503,7 @@ class SectionHeader: UICollectionReusableView {
      var label: UILabel = {
      let label: UILabel = UILabel()
      label.textColor = .white
-     label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+     label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
      label.sizeToFit()
      return label
  }()
