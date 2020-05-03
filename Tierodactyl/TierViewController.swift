@@ -12,7 +12,7 @@
 //can only drag cells up, not down
 import UIKit
 
-class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
    
     //keeps track of the number of sections
     var secCount = 0
@@ -36,9 +36,6 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }()
     
     @IBOutlet var longPressGesture: UILongPressGestureRecognizer!
-    
-
-    
     
     
     //MARK: View Did Load
@@ -179,14 +176,14 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: Edit Text/Delete
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
-        
+        //if true, goes through the motions of deleting the cell that was clicked.
         if longPressEnabled{
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-            collection.deleteItems(at: [indexPath])
-            collection.reloadData()
-            self.secCount-=1
-//            self.words.append([UILabel()])
-//            fatalError("You see, it worked.. but it didn't.")
+//            collection.deleteItems(at: [indexPath])
+//            words.removeLast()
+            words[indexPath.section].remove(at:indexPath.row)
+            collectionView.reloadData()
+//            self.secCount-=1
+//          fatalError("You see, it worked.. but it didn't.")
         }
         else{
         //an alert pops up when you click on a cell
@@ -392,6 +389,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func doneButtonTouchUp(deleteDoneButton sender: UIBarButtonItem) {
         deleteDoneButton.isEnabled = false
         isAnimate = false
+        longPressEnabled = false
         
     }
 
@@ -400,91 +398,12 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         longPressEnabled = true
         isAnimate = true
         
-        
-        
-    }
-    
-//MARK: Animation
-    //Animation for Collection View Cells
-    func startAnimate() {
-        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        shakeAnimation.duration = 0.05
-        shakeAnimation.repeatCount = 4
-        shakeAnimation.autoreverses = true
-        shakeAnimation.duration = 0.2
-        shakeAnimation.repeatCount = 99999
-
-        let startAngle: Float = (-2) * 3.14159/180
-        let stopAngle = -startAngle
-
-        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
-        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
-        shakeAnimation.autoreverses = true
-        shakeAnimation.timeOffset = 290 * drand48()
-
-        
-        
-//        let layer: CALayer = UIView.layer
-//        UIView.layer.add(shakeAnimation, forKey:"animate")
-        deleteDoneButton.isEnabled = true
-        self.removeBtn.isEnabled = true
-        isAnimate = true
-    }
-    
-    
-    func stopAnimate() {
-//        let layer: CALayer = self.layer
-//        layer.removeAnimation(forKey: "animate")
-        self.deleteDoneButton.isEnabled = false
-        self.removeBtn.isEnabled = false
-        isAnimate = false
-    }
-    
-    
-
-
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SmallImgCell.identifier, for: indexPath) as! SmallImgCell
-//        cell.backgroundColor = UIColor.clear
-//
-//        cell.imgView.image = UIImage(named: "\(imgArr[indexPath.row])")
-//
-//        cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
-//
-//        if longPressedEnabled   {
-//            cell.startAnimate()
-//        }else{
-//            cell.stopAnimate()
+//        for index in (0...secCount){
+//            for label in words[index]{
+//                label.shake()
+//            }
 //        }
-//
-//        return cell
-//    }
-//
-//
-
-//
-//
-
-//
-//    @IBAction func removeBtnClick(_ sender: UIButton)   {
-//        let hitPoint = sender.convert(CGPoint.zero, to: self.collection)
-//        let hitIndex = self.imgcollection.indexPathForItem(at: hitPoint)
-//
-//        //remove the image and refresh the collection view
-//        self.imgArr.remove(at: (hitIndex?.row)!)
-//        self.collection.reloadData()
-//    }
-//
-//    @IBAction func doneBtnClick(_ sender: UIButton) {
-//        //disable the shake and hide done button
-//        doneBtn.isHidden = true
-//        longPressedEnabled = false
-//
-//        self.collection.reloadData()
-//    }
-//
-//
-//
+    }
 }
 
 //a class for the cells, just changes background color and gives a lil curve to the corners
