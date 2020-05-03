@@ -187,7 +187,10 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                 self.words[indexPath.section][indexPath.row].text = nil
                 self.words[indexPath.section].remove(at:indexPath.row)
+                
                  collectionView.reloadData()
+//                cellStopShake()
+//                cellShake()
            
 
 //            }))
@@ -370,6 +373,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     //adds a label to words to account for one more cell and reloads everything
                     self.words[index-1].append(UILabel())
                     self.collection.reloadData()
+//                    self.cellShake()
                 }
                                    
             }))
@@ -405,6 +409,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         deleteDoneButton.isEnabled = false
         isAnimate = false
         longPressEnabled = false
+        cellStopShake()
         
     }
 
@@ -420,6 +425,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func cellShake(){
         for c:firstCell in cells{
             c.shake()
+        }
+    }
+    func cellStopShake(){
+        for c:firstCell in cells{
+    c.stopShaking()
         }
     }
 }
