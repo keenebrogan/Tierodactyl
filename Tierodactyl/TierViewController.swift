@@ -18,6 +18,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var secCount = 0
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
+    var cells : [firstCell] = []
     var cleared = false
     var deleteDoneButton : UIBarButtonItem!
     var longPressEnabled = false
@@ -153,6 +154,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //this customzes labels that go on the cell and allows the text to be more than one line, formats label
     func setUpLabel(_ indexPath: IndexPath, _ cell: firstCell){
+        cells.append(cell)
         words[indexPath.section][indexPath.row].lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
         words[indexPath.section][indexPath.row].numberOfLines = 0
         words[indexPath.section][indexPath.row].frame = CGRect(x: 5, y: 0, width: cell.frame.width-5, height: cell.frame.height)
@@ -178,12 +180,24 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
        
         //if true, goes through the motions of deleting the cell that was clicked.
         if longPressEnabled{
-//            collection.deleteItems(at: [indexPath])
-//            words.removeLast()
-            words[indexPath.section].remove(at:indexPath.row)
-            collectionView.reloadData()
-//            self.secCount-=1
-//          fatalError("You see, it worked.. but it didn't.")
+            
+//            let alert = UIAlertController(title: "Are you sure you want to delete this cell?", message: "", preferredStyle: UIAlertController.Style.alert)
+            
+            
+//            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+                self.words[indexPath.section][indexPath.row].text = nil
+                self.words[indexPath.section].remove(at:indexPath.row)
+                 collectionView.reloadData()
+           
+
+//            }))
+            
+//            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
+               
+            
+//            }))
+            
+
         }
         else{
         //an alert pops up when you click on a cell
@@ -367,6 +381,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc func longTap(_ gesture: UIGestureRecognizer){
         
+        
         switch(gesture.state) {
         case .began:
             guard let selectedIndexPath = collection.indexPathForItem(at: gesture.location(in: collection)) else {
@@ -397,12 +412,15 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.deleteDoneButton.isEnabled = true
         longPressEnabled = true
         isAnimate = true
+        cellShake()
         
-//        for index in (0...secCount){
-//            for label in words[index]{
-//                label.shake()
-//            }
-//        }
+
+    
+    }
+    func cellShake(){
+        for c:firstCell in cells{
+            c.shake()
+        }
     }
 }
 
@@ -414,6 +432,32 @@ class firstCell: UICollectionViewCell{
         
         backgroundColor = .systemBlue
         layer.cornerRadius = 10
+        
+    }
+    
+    
+    //MARK: Animation
+    func shake() {
+        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        shakeAnimation.duration = 0.05
+        shakeAnimation.repeatCount = 2
+        shakeAnimation.autoreverses = true
+        let startAngle: Float = (-2) * 3.14159/180
+        let stopAngle = -startAngle
+        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
+        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
+        shakeAnimation.autoreverses = true
+        shakeAnimation.duration = 0.15
+        shakeAnimation.repeatCount = 10000
+        shakeAnimation.timeOffset = 290 * drand48()
+
+        let layer: CALayer = self.layer
+        layer.add(shakeAnimation, forKey:"shaking")
+    }
+
+    func stopShaking() {
+        let layer: CALayer = self.layer
+        layer.removeAnimation(forKey: "shaking")
     }
     
     required init?(coder: NSCoder) {

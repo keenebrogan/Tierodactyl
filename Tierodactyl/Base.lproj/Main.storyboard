@@ -429,7 +429,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ljh-4i-5Ds" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="lIt-am-pf3"/>
+                <exit id="3MD-jg-zbd" userLabel="Exit" sceneMemberID="exit"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="lIt-am-pf3">
+                    <connections>
+                        <action selector="longPressGesture:" destination="3MD-jg-zbd" id="dMe-7H-8sL"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4459" y="37"/>
         </scene>
