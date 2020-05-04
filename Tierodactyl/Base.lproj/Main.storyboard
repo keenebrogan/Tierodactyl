@@ -404,7 +404,7 @@
                     <navigationItem key="navigationItem" title="Your Lists" id="YmQ-sE-fvK">
                         <barButtonItem key="leftBarButtonItem" title="Sign out" id="nie-GH-207"/>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="edit" id="zcW-L0-vPk">
+                            <barButtonItem title="Edit" id="zcW-L0-vPk">
                                 <connections>
                                     <action selector="editAction:" destination="eZK-EQ-H3P" id="CsK-bl-D6H"/>
                                 </connections>

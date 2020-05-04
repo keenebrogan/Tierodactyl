@@ -124,8 +124,8 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         let alertcontroller = UIAlertController(title: "Add List", message: nil, preferredStyle: .alert)
         alertcontroller.addTextField(configurationHandler: listNameTextField)
         
-        let okAction = UIAlertAction(title: "DONE", style: .default, handler: self.okHandler)
-        let cancelAction = UIAlertAction(title: "CANCEL", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Add", style: .default, handler: self.okHandler)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         
         alertcontroller.addAction(okAction)
         alertcontroller.addAction(cancelAction)
