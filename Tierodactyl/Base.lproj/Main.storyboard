@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="EeA-KK-J2L">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -403,6 +403,18 @@
                     </view>
                     <navigationItem key="navigationItem" title="Your Lists" id="YmQ-sE-fvK">
                         <barButtonItem key="leftBarButtonItem" title="Sign out" id="nie-GH-207"/>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="edit" id="zcW-L0-vPk">
+                                <connections>
+                                    <action selector="editAction:" destination="eZK-EQ-H3P" id="CsK-bl-D6H"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="add" id="rnp-Tb-057">
+                                <connections>
+                                    <action selector="addAction:" destination="eZK-EQ-H3P" id="bzg-05-7Gf"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGb-Pw-Gp6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

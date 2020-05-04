@@ -7,64 +7,47 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
-    //all the lists
+    //tableview
     let tbView = UITableView()
-    var lists : [SeparateLists] = []
-    var stuff = ["List1"]
     
+    //All the lists? I don't think this does anything
+    var lists : [SeparateLists] = []
+    
+    //Lists for the table
+    var listNames = ["Sample"]
+    
+    //userID and username for Database
+    var userID: String = " "
+    var name: String = " "
+    
+    //for adding
+    var listNameTextField : UITextField!
+    
+    //I don't think this does anything right now
     var homeLists: [String: [TierViewController]] = [:]
     
-    var button = UIButton()
-    var bar = UIBarButtonItem()
+//    var button = UIButton()
+//    var bar = UIBarButtonItem()
     
-    var text1 = "Hello!"
-    var text2 = "Good bye!"
+ 
+    //database instance
+    var ref = Database.database().reference()
     
     
+    //Notes to self:
     //CREATE A DATABASE WITH ALL OF THE LISTS
-    
-    
     //protype cell
-    
-    
     //dictionary with name of list and array for list
-    
-    
-    
     // array of homescreen object - extends table vew cell - has property of array of individual cells. when you add new list it will create the object that each list is
     
-    //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    //        guard var count = lists?.count else {return 1}
-    //        return count
-    //        return 1
-    //    }
-    
-    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        if lists != nil{
-    //            return lists![indexPath.row]
-    //        }
-    
-    //        var cell = HomeScreenTableViewCell()
-    //
-    //        cell.textLabel?.text = "List 1"
-    //        return cell
-    //    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        if lists != nil{
-        //            lists![indexPath.row]
-        //        }
-    }
-    
-    
-    
-    @IBOutlet weak var tableView: UITableView!
     
     var safeArea: UILayoutGuide!
     
+    //this sets up our tableview
     func setUpTable(){
         view.addSubview(tbView);
         tbView.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +57,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         tbView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         safeArea = view.layoutMarginsGuide
         tbView.backgroundColor = .white
-
+        
         
         //var tableView = UITableView()
         tbView.delegate = self
@@ -87,54 +70,93 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func setUpButton(){
-        // 2. add to subview
-        view.addSubview(button)
-        // 3. add props
-        button.setTitle("Add", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .red
-        button.titleLabel?.font = UIFont(name: "Helvetica Nue", size: 50)
-        // 4. set up func when button pressed
-        button.addTarget(self, action: #selector(add), for: .touchUpInside)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 400).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 1000).isActive = true
+//      I used to have a button here, will delete later
+//    func setUpButton(){
+//        // 2. add to subview
+//        view.addSubview(button)
+//        // 3. add props
+//        button.setTitle("+", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.backgroundColor = .blue
+//        button.titleLabel?.font = UIFont(name: "Helvetica Nue", size: 75)
+//        // 4. set up func when button pressed
+//        button.addTarget(self, action: #selector(addAction), for: .touchUpInside)
+//
+//       button.addTarget(self, action: #selector(addAction()), for: .touchUpInside)
+//
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//
+//        button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+//        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 400).isActive = true
+//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        button.widthAnchor.constraint(equalToConstant: 1000).isActive = true
+//    }
+    
+    
+    //works with editing (see line 136)
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let moveObjTemp = listNames[sourceIndexPath.item]
+        listNames.remove(at: sourceIndexPath.item)
+        listNames.insert(moveObjTemp, at: destinationIndexPath.item)
     }
     
-    
-    func setUpBarButton(){
-        bar = UIBarButtonItem(image: UIImage(named: "ptiero" ), style: .plain, target: self, action: #selector(edit))
-        self.navigationItem.rightBarButtonItem = bar
-    }
-    
-    @objc func edit(){
-        
-        
-//        stuff[indexPath.row] = input
-    }
-    
-    @objc func add(){
-        stuff.append("New List")
-        for i in stuff{
-            print(i)
+    // works with deleting (see line 136)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            listNames.remove(at: indexPath.item)
+            tbView.deleteRows(at: [indexPath], with: .automatic)
         }
+        
+    }
+    //This allows you to rearrange the lists and delete them
+    @IBAction func editAction(_ sender: UIBarButtonItem) {
+        self.tbView.isEditing = !self.tbView.isEditing
+        if self.tbView.isEditing{
+            sender.title = "Done"
+        }
+        else{
+            sender.title = "Edit"
+        }
+    }
+    
+    //This allows adding lists
+    @IBAction func addAction(_ sender: UIBarButtonItem) {
+        let alertcontroller = UIAlertController(title: "Add List", message: nil, preferredStyle: .alert)
+        alertcontroller.addTextField(configurationHandler: listNameTextField)
+        
+        let okAction = UIAlertAction(title: "DONE", style: .default, handler: self.okHandler)
+        let cancelAction = UIAlertAction(title: "CANCEL", style: .default, handler: nil)
+        
+        alertcontroller.addAction(okAction)
+        alertcontroller.addAction(cancelAction)
+        
+        self.present(alertcontroller, animated: true)
+    }
+    
+    //this is the text field for the alert so that we can add Lists
+    func listNameTextField(textField: UITextField!){
+        listNameTextField = textField
+        listNameTextField.placeholder = "List name here"
+    }
+    //this is the function for the alert
+    func okHandler(alert : UIAlertAction){
+        listNames.append(listNameTextField.text ?? " ")
+        
+        //this should work with the database, I don't think it works yet though
+        self.ref.child("users").child(userID).child(name).child(listNames[listNames.endIndex - 1]).setValue(" ")
+        
         self.tbView.reloadData()
-        //        self.loadView()
     }
-    
+    // this returns the number of rows in the table which is the size of my array
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stuff.count
+        return listNames.count
     }
     
-    
+    //this is your basic needed function
+    //returns a cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = stuff[indexPath.row]
+        let cell = tbView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = listNames[indexPath.row]
         
         return cell
     }
@@ -142,13 +164,15 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         setUpTable()
-        setUpButton()
-        setUpBarButton()
+//        setUpButton()
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        //This line of code makes it so that you can't see the outline of cells when they aren't there. I can just delete this but I think it looks cool so idk
+        tbView.tableFooterView = UIView(frame: CGRect.zero)
+        
     }
     
-    
+    //This does nothing - working on it
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if (sender as? HomeScreenTableViewCell) != nil{
             if segue.destination is TierViewController{
