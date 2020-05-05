@@ -5,10 +5,8 @@
 //  Created by Margaret Hollis (student LM) on 3/31/20.
 //  Copyright © 2020 Margaret Hollis (student LM). All rights reserved.
 //
-
 //need labels to stay on cell when dragged
 //why does it get weird when I reload collection
-
 //can only drag cells up, not down
 import UIKit
 
@@ -187,8 +185,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                 self.words[indexPath.section][indexPath.row].text = nil
                 self.words[indexPath.section].remove(at:indexPath.row)
+           
                 
-                 collectionView.reloadData()
+                collectionView.reloadData()
 //                cellStopShake()
 //                cellShake()
            
@@ -284,9 +283,15 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 //moves the cell from one location to the other
                 collectionView.moveItem(at: sourceIndexPath, to: destinationIndexPath)
                 
-                //moves the labels from the old cell to the new one
-                words[destinationIndexPath.section].insert(words[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
+                var label = words[sourceIndexPath.section][sourceIndexPath.row]
+                
+                //self.words[sourceIndexPath.section][sourceIndexPath.row].text = nil
                 words[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+                
+                //moves the labels from the old cell to the new one
+                words[destinationIndexPath.section].insert(label, at: destinationIndexPath.row)
+               
+               
                 
                 }, completion: nil)
             
@@ -334,7 +339,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //reloads everything
                       alert.addAction(UIAlertAction(title: "Add Tier", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                         self.secCount+=1
-                        self.words.append([UILabel()])
+                        self.words.append([UILabel(),UILabel(),UILabel(),UILabel()])
                         self.collection.reloadData()
                            
                       }))
@@ -503,9 +508,6 @@ override init(frame: CGRect) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
 
 
 
