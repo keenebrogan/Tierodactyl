@@ -24,6 +24,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var removeBtn: UIButton!
     
     
+    func loadRequest(){
+        guard self.title != nil else {return}
+    }
+    
+    
     //creating the collection view, adding some basc formatting, more later
     let collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

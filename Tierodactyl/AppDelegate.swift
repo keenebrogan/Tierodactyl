@@ -14,10 +14,29 @@ import Firebase
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    
+    //check for first launch
+    var hasAlreadyLaunched :Bool!
 
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        //retrieve value from local store, if value doesn't exist then false is returned
+        hasAlreadyLaunched = UserDefaults.standard.bool(forKey: "hasAlreadyLaunched")
+        //check first launched
+        if (hasAlreadyLaunched)
+        {
+            hasAlreadyLaunched = true
+        }else{
+            UserDefaults.standard.set(true, forKey: "hasAlreadyLaunched")
+        }
+        
         FirebaseApp.configure()
         return true
+    }
+    
+    func sethasAlreadyLaunched(){
+        hasAlreadyLaunched = true
     }
     
     // MARK: UISceneSession Lifecycle

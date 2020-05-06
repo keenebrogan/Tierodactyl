@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 import FirebaseDatabase
 
 class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
@@ -18,11 +19,11 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     var lists : [SeparateLists] = []
     
     //Lists for the table
-    var listNames = ["Sample"]
+    var listNames = [String]()
     
-    //userID and username for Database
-    var userID: String = " "
-    var name: String = " "
+    var userID: String = ""
+    var name: String = ""
+    var password: String = ""
     
     //for adding
     var listNameTextField : UITextField!
@@ -30,10 +31,14 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     //I don't think this does anything right now
     var homeLists: [String: [TierViewController]] = [:]
     
-//    var button = UIButton()
-//    var bar = UIBarButtonItem()
+    //    var button = UIButton()
+    //    var bar = UIBarButtonItem()
     
- 
+    let firstTimeMess = "Welcome to pTIERodactyl! Here you can create as many tier lists as you want! As this is your first time using our product, please tap through the 'Example' tier list. When you are finished you can delete this list and add your own by using the buttons in the top right corner of your screen! Enjoy!"
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    
     //database instance
     var ref = Database.database().reference()
     
@@ -56,8 +61,8 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         tbView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tbView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         safeArea = view.layoutMarginsGuide
-        tbView.backgroundColor = .white
-        
+        //        tbView.backgroundColor = .white
+        tbView.backgroundColor = .init(cgColor: CGColor.init(srgbRed: 61, green: 80, blue: 163, alpha: 0.0))
         
         //var tableView = UITableView()
         tbView.delegate = self
@@ -70,27 +75,27 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-//      I used to have a button here, will delete later
-//    func setUpButton(){
-//        // 2. add to subview
-//        view.addSubview(button)
-//        // 3. add props
-//        button.setTitle("+", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.backgroundColor = .blue
-//        button.titleLabel?.font = UIFont(name: "Helvetica Nue", size: 75)
-//        // 4. set up func when button pressed
-//        button.addTarget(self, action: #selector(addAction), for: .touchUpInside)
-//
-//       button.addTarget(self, action: #selector(addAction()), for: .touchUpInside)
-//
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//
-//        button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-//        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 400).isActive = true
-//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        button.widthAnchor.constraint(equalToConstant: 1000).isActive = true
-//    }
+    //      I used to have a button here, will delete later
+    //    func setUpButton(){
+    //        // 2. add to subview
+    //        view.addSubview(button)
+    //        // 3. add props
+    //        button.setTitle("+", for: .normal)
+    //        button.setTitleColor(.white, for: .normal)
+    //        button.backgroundColor = .blue
+    //        button.titleLabel?.font = UIFont(name: "Helvetica Nue", size: 75)
+    //        // 4. set up func when button pressed
+    //        button.addTarget(self, action: #selector(addAction), for: .touchUpInside)
+    //
+    //       button.addTarget(self, action: #selector(addAction()), for: .touchUpInside)
+    //
+    //        button.translatesAutoresizingMaskIntoConstraints = false
+    //
+    //        button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+    //        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 400).isActive = true
+    //        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    //        button.widthAnchor.constraint(equalToConstant: 1000).isActive = true
+    //    }
     
     
     //works with editing (see line 136)
@@ -143,7 +148,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         listNames.append(listNameTextField.text ?? " ")
         
         //this should work with the database, I don't think it works yet though
-        self.ref.child("users").child(userID).child(name).child(listNames[listNames.endIndex - 1]).setValue(" ")
+        self.ref.child("List Names/\(userID)/\(listNames[listNames.endIndex - 1])/").setValue(listNames.endIndex)
         
         self.tbView.reloadData()
     }
@@ -155,16 +160,44 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     //this is your basic needed function
     //returns a cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tbView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tbView.dequeueReusableCell(withIdentifier: "HomeScreenCell", for: indexPath) as! HomeScreenCell
         cell.textLabel?.text = listNames[indexPath.row]
+        
+        cell.backgroundColor = .init(cgColor: CGColor.init(srgbRed: 61, green: 120, blue: 163, alpha: 1.0))
         
         return cell
     }
     
     
+    func displayMessage(message:String){
+        let alert = UIAlertController(title: "Welcome to pTIERodactyl!", message: message, preferredStyle: .alert)
+        //create Decline button
+        let okAction = UIAlertAction(title: "Ok!" , style: .destructive){ (action) -> Void in
+        }
+        //add task to tableview buttons
+        alert.addAction(okAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
     override func viewDidLoad() {
+        
+        //this allows us to use the uid
+        if let user = Auth.auth().currentUser?.uid {
+            self.userID = user
+        }
+        
+        //this sets up an example list
+        self.ref.child("List Names/\(userID)/Example/Fruits/banana").setValue("1a")
+        self.ref.child("List Names/\(userID)/Example/Fruits/apple").setValue("2a")
+        self.ref.child("List Names/\(userID)/Example/Fruits/orange").setValue("1b")
+        self.ref.child("List Names/\(userID)/Example/Fruits/blueberry").setValue("2b")
+        
+        //this sets up the table (see line 52)
         setUpTable()
-//        setUpButton()
+        //        setUpButton()
         super.viewDidLoad()
         
         //This line of code makes it so that you can't see the outline of cells when they aren't there. I can just delete this but I think it looks cool so idk
@@ -172,15 +205,25 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    //This does nothing - working on it
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-        if (sender as? HomeScreenTableViewCell) != nil{
-            if segue.destination is TierViewController{
-                //tierViewController.list = homeLists
-            }
+    override func viewDidAppear(_ animated: Bool) {
+        if(!appDelegate.hasAlreadyLaunched){
+            
+            //set hasAlreadyLaunched to false
+            appDelegate.sethasAlreadyLaunched()
+            //display user agreement license
+            displayMessage(message: self.firstTimeMess)
         }
     }
     
+    
+    //This does nothing - working on it
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if let cell = sender as? HomeScreenCell{
+            if let tierViewController = segue.destination as? TierViewController{
+                tierViewController.title =  cell.textLabel?.text
+            }
+        }
+    }
     
     /*
      // MARK: - Navigation
@@ -192,4 +235,8 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
      }
      */
     
+}
+
+class HomeScreenCell: UITableViewCell{
+    var title: String = ""
 }

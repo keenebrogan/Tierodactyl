@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class LoginViewController: UIViewController {
 
@@ -44,6 +45,17 @@ class LoginViewController: UIViewController {
            super.viewDidLoad()
 
            // Do any additional setup after loading the view.
+       }
+    
+    
+    //asynchronus data - reference database .observe
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+           if let HomeScreenViewController = segue.destination as? HomeScreenViewController{
+//               HomeScreenViewController.userID =
+//                HomeScreenViewController.name = self.username.text ?? " "
+           }
        }
 
     /*

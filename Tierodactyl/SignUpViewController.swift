@@ -43,26 +43,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     })
                     self.dismiss(animated: true, completion: nil)
                     //Adds to database every time a new user enters something
-                    self.ref.child("users").child(uid).child(name).child("Sample").setValue(" ")
+                    self.ref.child("login info").child(uid).child("Name").setValue(name)
+                    self.ref.child("login info").child(uid).child("Email").setValue(email)
+                    self.ref.child("login info").child(uid).child("Password").setValue(password)
                     
                 }
             }
             else{
                 print(error.debugDescription)
             }
-        }
-        
-        //adds to database once
-        ref.child("Sample").child("List 1: Fruits").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.ref.child("Sample").child("List 1: Fruits").child("banana").setValue("1a")
-            self.ref.child("Sample").child("List 1: Fruits").child("orange").setValue("2a")
-            self.ref.child("Sample").child("List 1: Fruits").child("apple").setValue("3a")
-            self.ref.child("Sample").child("List 1: Fruits").child("blueberry").setValue("4a")
-            
-            // ...
-        })
-        { (error) in
-            print(error.localizedDescription)
         }
     }
     
