@@ -13,7 +13,6 @@ import UIKit
 class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
    
     //keeps track of the number of sections
-    var secCount = 0
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
     var cells : [firstCell] = []
@@ -137,7 +136,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     //number of sections in the collectionview
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return secCount
+        return words.count
     }
     
     //number of cells in each section/tier
@@ -193,6 +192,10 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                 self.words[indexPath.section][indexPath.row].text = nil
                 self.words[indexPath.section].remove(at:indexPath.row)
+            
+            if words[indexPath.section].count == 0{
+                words.remove(at: indexPath.section)
+            }
            
                 
                 collectionView.reloadData()
@@ -318,7 +321,6 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return UICollectionViewDropProposal(operation: .forbidden)
     }
     
-    //DOES THIS HAVE ANYTHING TODO WITH LABELS BEING MESSED UP?
     //identifies what is being dragged
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         var item = ""
@@ -346,8 +348,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //adds a section with one cell, updates secCount to have the right number of sections
         //reloads everything
                       alert.addAction(UIAlertAction(title: "Add Tier", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-                        self.secCount+=1
-                        self.words.append([UILabel(),UILabel(),UILabel(),UILabel()])
+                        self.words.append([UILabel()])
                         self.collection.reloadData()
                            
                       }))
