@@ -21,6 +21,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var deleteDoneButton : UIBarButtonItem!
     var longPressEnabled = false
     var isAnimate: Bool! = false
+    
+    var receivedData = ""
+    
     @IBOutlet weak var removeBtn: UIButton!
     
     

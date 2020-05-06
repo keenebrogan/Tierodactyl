@@ -71,7 +71,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         //tableView.register(HomeScreenTableViewCell(), forCellReuseIdentifier: "MyCell")
         
         //     view.addSubview(tableView)
-        tbView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tbView.register(HomeScreenCell.self, forCellReuseIdentifier: "homeScreenCell")
         
     }
     
@@ -160,7 +160,8 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     //this is your basic needed function
     //returns a cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tbView.dequeueReusableCell(withIdentifier: "HomeScreenCell", for: indexPath) as! HomeScreenCell
+        //this is a problem, I don't know why
+        let cell = tableView.dequeueReusableCell(withIdentifier: "homeScreenCell", for: indexPath) as! HomeScreenCell
         cell.textLabel?.text = listNames[indexPath.row]
         
         cell.backgroundColor = .init(cgColor: CGColor.init(srgbRed: 61, green: 120, blue: 163, alpha: 1.0))
@@ -215,15 +216,41 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
+    // method to run when table view cell is tapped
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        // Segue to the second view controller
+        navigationController?.pushViewController(TierViewController(), animated: false)
+        //self.performSegue(withIdentifier: "thisSegue", sender: self)
+        
+    }
+
+    // This function is called before the segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        // get a reference to the second view controller
+        //if let cell = sender as? HomeScreenCell{
+            
+            if let tierViewController = segue.destination as? TierViewController{
+                tierViewController.title = listNames.last
+            }
+       // }
+        // set a variable in the second view controller with the data to pass
+    }
+    
+    
+    
     
     //This does nothing - working on it
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-        if let cell = sender as? HomeScreenCell{
-            if let tierViewController = segue.destination as? TierViewController{
-                tierViewController.title =  cell.textLabel?.text
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+//        if let cell = sender as? HomeScreenCell{
+//
+//
+//            if let tierViewController = segue.destination as? TierViewController{
+//                tierViewController.title =  cell.textLabel?.text
+//            }
+//        }
+//    }
     
     /*
      // MARK: - Navigation
