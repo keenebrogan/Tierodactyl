@@ -48,6 +48,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        //makes sure there are no empty sections
+    
+     
 
         //adds long press gesture and sends code to "@objc long" method when pressed down
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(long))
@@ -142,6 +147,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //number of cells in each section/tier
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+     
         return words[section].count
     }
     
@@ -310,6 +316,8 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             //finally, the drop is completed
              coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+            
+            
         }
         
     }
