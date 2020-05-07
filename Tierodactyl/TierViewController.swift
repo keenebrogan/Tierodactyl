@@ -193,6 +193,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.words[indexPath.section][indexPath.row].text = nil
                 self.words[indexPath.section].remove(at:indexPath.row)
             
+            
             if words[indexPath.section].count == 0{
                 words.remove(at: indexPath.section)
             }
