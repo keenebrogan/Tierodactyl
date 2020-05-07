@@ -13,6 +13,7 @@ import UIKit
 class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
    
     //keeps track of the number of sections
+    var secCount = 0
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
     var cells : [firstCell] = []
