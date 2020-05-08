@@ -219,26 +219,11 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        // Segue to the second view controller
-        navigationController?.pushViewController(TierViewController(), animated: false)
-        //self.performSegue(withIdentifier: "thisSegue", sender: self)
+        self.performSegue(withIdentifier: "Segue", sender: nil)
         
     }
 
-    // This function is called before the segue
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        // get a reference to the second view controller
-        //if let cell = sender as? HomeScreenCell{
-            
-            if let tierViewController = segue.destination as? TierViewController{
-                tierViewController.title = listNames.last
-            }
-       // }
-        // set a variable in the second view controller with the data to pass
-    }
-    
-    
     
     
     //This does nothing - working on it
