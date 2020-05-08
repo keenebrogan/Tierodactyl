@@ -23,7 +23,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var longPressEnabled = false
     var isAnimate: Bool! = false
     
-    var receivedData = ""
+    var listName = ""
     
     @IBOutlet weak var removeBtn: UIButton!
     
@@ -48,6 +48,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //MARK: View Did Load
     override func viewDidLoad() {
+        
+        print(listName)
+        
         super.viewDidLoad()
         
         
@@ -230,6 +233,8 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 //a stand in label that will be used to put the text on the cell
                     let label = UILabel()
                     label.text = (alert.textFields?.first!.text)!
+                //adds text
+//                    self.ref.child("List Names/\(userID)/\(listNames[listNames.count - 1])/").setValue(listNames.count)
                         
                 //label formatting
                     label.font = UIFont(name: "Times New Roman", size: 30)

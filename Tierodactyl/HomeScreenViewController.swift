@@ -148,7 +148,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     func okHandler(alert : UIAlertAction){
         listNames.append(listNameTextField.text ?? " ")
         
-        //this should work with the database, I don't think it works yet though
+        //this should work with the database
         self.ref.child("List Names/\(userID)/\(listNames[listNames.count - 1])/").setValue(listNames.count)
         
         self.tbView.reloadData()
@@ -245,7 +245,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         self.performSegue(withIdentifier: "Segue", sender: nil)
         
     }
@@ -254,13 +254,14 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     //This does nothing - working on it
-//        override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-//            if let cell = sender as? OriginalViewController{
-//    
-//    
-//            
-//            }
-//        }
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+            if segue.identifier == "Segue"{
+                if let indexPath = self.tbView.indexPathForSelectedRow{
+                    let controller = segue.destination as! TierViewController
+                    controller.listName = listNames[indexPath.row]
+                }
+            }
+        }
     
     /*
      // MARK: - Navigation
