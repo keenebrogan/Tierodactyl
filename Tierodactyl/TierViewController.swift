@@ -53,10 +53,28 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: View Did Load
     override func viewDidLoad() {
         
-        print(listName)
-        print(userID)
         
         super.viewDidLoad()
+        
+        var count = 0
+        ref.child("List Names").child(userID).child(listName).observe(.childAdded, with: { (snapshot) in
+            
+            
+            count += 1
+            // Get ListName
+            let section = snapshot.key
+            
+            
+            //let num = snapshot.value as? Int
+            
+            
+            self.collection.reloadData()
+            
+        
+            // ...
+        }) { (error) in
+            print(error.localizedDescription)
+        }
         
         
         //makes sure there are no empty sections
@@ -238,9 +256,11 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 //a stand in label that will be used to put the text on the cell
                     let label = UILabel()
                     label.text = (alert.textFields?.first!.text)!
-                //adds text
-                self.ref.child("List Names/\(self.userID)/\(self.listName)").setValue(0)
-                        
+                //adds text to database
+                
+                if let text = label.text {
+                    self.ref.child("List Names/\(self.userID)/\(self.listName)/\(indexPath.section)/\(text)").setValue(indexPath.row)
+                }
                 //label formatting
                     label.font = UIFont(name: "Times New Roman", size: 30)
                     label.textColor = .black
