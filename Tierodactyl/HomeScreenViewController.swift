@@ -16,7 +16,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     let tbView = UITableView()
     
     //All the lists? I don't think this does anything
-    var lists : [SeparateLists] = []
+    //var lists : [SeparateLists] = []
     
     //Lists for the table
     var listNames = [String]()
