@@ -556,13 +556,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2TKBZ5CJN5;
+				DEVELOPMENT_TEAM = 8QW93H65Q8;
 				INFOPLIST_FILE = Tierodactyl/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl;
+				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl123;
 				PRODUCT_NAME = ptierodactyl;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
