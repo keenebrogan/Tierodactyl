@@ -259,6 +259,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
                 if let indexPath = self.tbView.indexPathForSelectedRow{
                     let controller = segue.destination as! TierViewController
                     controller.listName = listNames[indexPath.row]
+                    controller.userID = self.userID
                 }
             }
         }

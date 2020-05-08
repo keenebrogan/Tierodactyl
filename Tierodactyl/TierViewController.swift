@@ -9,6 +9,7 @@
 //why does it get weird when I reload collection
 //can only drag cells up, not down
 import UIKit
+import FirebaseDatabase
 
 class TierViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDragDelegate, UICollectionViewDropDelegate{
    
@@ -24,6 +25,9 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var isAnimate: Bool! = false
     
     var listName = ""
+    var userID = ""
+    
+    var ref = Database.database().reference()
     
     @IBOutlet weak var removeBtn: UIButton!
     
@@ -50,6 +54,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         
         print(listName)
+        print(userID)
         
         super.viewDidLoad()
         
@@ -234,7 +239,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let label = UILabel()
                     label.text = (alert.textFields?.first!.text)!
                 //adds text
-//                    self.ref.child("List Names/\(userID)/\(listNames[listNames.count - 1])/").setValue(listNames.count)
+                self.ref.child("List Names/\(self.userID)/\(self.listName)").setValue(0)
                         
                 //label formatting
                     label.font = UIFont(name: "Times New Roman", size: 30)
