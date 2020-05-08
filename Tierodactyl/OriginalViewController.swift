@@ -12,6 +12,7 @@ class OriginalViewController: UIViewController {
 
     override func viewDidLoad() {
         print("Yes this is working")
+    
         
         self.navigationItem.leftBarButtonItems?.removeAll()
         self.navigationItem.rightBarButtonItems?.removeAll()
@@ -20,6 +21,10 @@ class OriginalViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func unwind( _ seg: UIStoryboardSegue) {
+
+          }
     
 
     /*
