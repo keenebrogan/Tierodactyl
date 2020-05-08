@@ -377,9 +377,11 @@
                     </navigationItem>
                     <connections>
                         <segue destination="EeA-KK-J2L" kind="showDetail" identifier="Segue" id="I28-2w-gU4"/>
+                        <segue destination="8vE-hS-amz" kind="unwind" identifier="unwind" unwindAction="unwind:" id="URh-L0-ZLe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGb-Pw-Gp6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="8vE-hS-amz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3604" y="37"/>
         </scene>
