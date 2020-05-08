@@ -29,13 +29,15 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password){(user, error)
             in
             if error == nil && user != nil {
-                print("user found")
+              
                 self.dismiss(animated: false, completion: nil)
 //                self.navigationController?.pushViewController(HomeScreenViewController(), animated: false)
             }
             else {
                 print(error!.localizedDescription)
             }
+            
+            
         }
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -44,12 +46,17 @@ class LoginViewController: UIViewController {
         }
         else if password.isFirstResponder {
             password.resignFirstResponder()
-            loginButtonO.isEnabled = true
+          
         }
         return true
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+         print("User: \(Auth.auth().currentUser)")
+        
+      
         email2.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }
@@ -59,8 +66,8 @@ class LoginViewController: UIViewController {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("User ID: \(Auth.auth().currentUser?.uid ?? "0")")
-        
+        print("User ID: \(Auth.auth().currentUser?.uid ?? "hey")")
+      
         if let HomeScreenViewController = segue.destination as? HomeScreenViewController{
             HomeScreenViewController.userID = Auth.auth().currentUser?.uid ?? " "
         }

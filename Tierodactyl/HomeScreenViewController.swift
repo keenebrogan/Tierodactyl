@@ -189,13 +189,14 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         } catch let signOutError as NSError {
           print ("Error signing out: %@", signOutError)
         }
+       
         self.performSegue(withIdentifier: "unwindd", sender: nil)
 
     }
     
     
     override func viewDidLoad() {
-        
+     
         //this sets up an example list
         self.ref.child("List Names/\(userID)/Fruits").setValue(1)
         listNames.append("Fruits")
@@ -216,7 +217,8 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             self.tbView.reloadData()
             
-        
+          
+            
             // ...
         }) { (error) in
             print(error.localizedDescription)
