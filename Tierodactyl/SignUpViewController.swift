@@ -53,6 +53,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             else{
                 print(error.debugDescription)
             }
+            
+          
         }
     }
     
@@ -66,13 +68,16 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
         else {
             password.resignFirstResponder()
-            signupButtonO.isEnabled = true
+          
         }
         return true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    
+        
         emailAddress.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }

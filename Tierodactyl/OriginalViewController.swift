@@ -11,7 +11,6 @@ import UIKit
 class OriginalViewController: UIViewController {
 
     override func viewDidLoad() {
-        print("Yes this is working")
     
         
         self.navigationItem.leftBarButtonItems?.removeAll()
