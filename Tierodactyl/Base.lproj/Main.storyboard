@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -376,7 +376,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <segue destination="EeA-KK-J2L" kind="show" identifier="Segue" id="I28-2w-gU4"/>
+                        <segue destination="EeA-KK-J2L" kind="showDetail" identifier="Segue" id="I28-2w-gU4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGb-Pw-Gp6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -417,7 +417,6 @@
         <image name="tier" width="1082" height="1082"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SkG-5i-Nhw"/>
         <segue reference="VAA-D1-fiu"/>
         <segue reference="598-bE-2Fi"/>
     </inferredMetricsTieBreakers>
