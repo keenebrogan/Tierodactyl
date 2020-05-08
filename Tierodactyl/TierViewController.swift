@@ -64,7 +64,12 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             // Get ListName
             let section = snapshot.key
             
+//            var label : UILabel
+//            label.text = section
+//            
+//            let label2 : UILabel
             
+//            words[[section]]
             //let num = snapshot.value as? Int
             
             
