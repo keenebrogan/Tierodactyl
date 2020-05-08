@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -77,48 +77,6 @@
                                     <segue destination="aJo-vd-JXS" kind="show" id="SkG-5i-Nhw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDe-jH-txh">
-                                <rect key="frame" x="57" y="618" width="300" height="50"/>
-                                <color key="backgroundColor" red="0.23921568627450979" green="0.31372549019607843" blue="0.41752262120601658" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="3jb-7j-gBP"/>
-                                    <constraint firstAttribute="height" constant="50" id="mYU-T6-hF7"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
-                                <color key="tintColor" red="0.23921568627450979" green="0.31372549019607843" blue="0.63921568627450975" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Bypass to List (Delete Later)">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="eZK-EQ-H3P" kind="show" id="aOu-kF-lnP"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="87o-ej-b3U">
-                                <rect key="frame" x="57" y="696" width="300" height="50"/>
-                                <color key="backgroundColor" red="0.23921568630000001" green="0.31372549020000001" blue="0.4175226212" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="ZdL-1y-pXd"/>
-                                    <constraint firstAttribute="height" constant="50" id="eh3-ZW-3V9"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
-                                <color key="tintColor" red="0.23921568630000001" green="0.31372549020000001" blue="0.63921568630000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Bypass to Tier (Delete Later)">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="EeA-KK-J2L" kind="show" id="IFh-WV-7fb"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.23921568627450979" green="0.31372549019607843" blue="0.63921568627450975" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -126,11 +84,7 @@
                             <constraint firstItem="rMT-pa-Qkv" firstAttribute="centerX" secondItem="2v2-0n-OuR" secondAttribute="centerX" id="3NR-2S-5ci"/>
                             <constraint firstItem="Rer-Q3-zQH" firstAttribute="centerX" secondItem="2v2-0n-OuR" secondAttribute="centerX" id="4GG-2c-yp3"/>
                             <constraint firstItem="oXq-9f-BC6" firstAttribute="top" secondItem="2v2-0n-OuR" secondAttribute="top" constant="100" id="HHk-CN-vwc"/>
-                            <constraint firstItem="87o-ej-b3U" firstAttribute="centerX" secondItem="2v2-0n-OuR" secondAttribute="centerX" id="Oec-4f-4pj"/>
-                            <constraint firstItem="LDe-jH-txh" firstAttribute="top" secondItem="Rer-Q3-zQH" secondAttribute="bottom" constant="28" id="PAB-dL-Hfq"/>
                             <constraint firstItem="oXq-9f-BC6" firstAttribute="leading" secondItem="sY6-B5-swD" secondAttribute="leading" constant="30" id="TBc-wF-l2R"/>
-                            <constraint firstItem="LDe-jH-txh" firstAttribute="centerX" secondItem="2v2-0n-OuR" secondAttribute="centerX" id="Y62-Cc-nUN"/>
-                            <constraint firstItem="87o-ej-b3U" firstAttribute="top" secondItem="LDe-jH-txh" secondAttribute="bottom" constant="28" id="f0u-GS-h1J"/>
                             <constraint firstAttribute="trailing" secondItem="oXq-9f-BC6" secondAttribute="trailing" constant="30" id="jVT-DX-qGS"/>
                             <constraint firstItem="rMT-pa-Qkv" firstAttribute="top" secondItem="oXq-9f-BC6" secondAttribute="bottom" constant="8" id="qrV-ve-ORM"/>
                         </constraints>
@@ -462,8 +416,8 @@
         <image name="tier" width="1082" height="1082"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="I28-2w-gU4"/>
-        <segue reference="aOu-kF-lnP"/>
+        <segue reference="9yi-rv-Eof"/>
+        <segue reference="s8F-PC-VlX"/>
         <segue reference="flI-5S-GQv"/>
     </inferredMetricsTieBreakers>
 </document>

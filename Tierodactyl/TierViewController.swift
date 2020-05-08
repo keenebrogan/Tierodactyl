@@ -16,6 +16,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var secCount = 0
     //this holds the number of cells as well as the text to go with each cell
     var words = [[UILabel]()]
+//    var words : [(word: UILabel(), value : firstCell)]
     var cells : [firstCell] = []
     var cleared = false
     var deleteDoneButton : UIBarButtonItem!
@@ -193,33 +194,19 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
         //if true, goes through the motions of deleting the cell that was clicked.
         if longPressEnabled{
             
-//            let alert = UIAlertController(title: "Are you sure you want to delete this cell?", message: "", preferredStyle: UIAlertController.Style.alert)
-            
-            
-//            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
                 self.words[indexPath.section][indexPath.row].text = nil
                 self.words[indexPath.section].remove(at:indexPath.row)
             
             
             if words[indexPath.section].count == 0{
                 words.remove(at: indexPath.section)
-            }
-           
                 
-                collectionView.reloadData()
-//                cellStopShake()
-//                cellShake()
-           
-
-//            }))
+            }
             
-//            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:{ (UIAlertAction) in
-               
-            
-//            }))
-            
-
+            collectionView.reloadData()
+        
         }
+            
         else{
         //an alert pops up when you click on a cell
         let alert = UIAlertController(title: "Edit Cell", message: "Enter the text you would like to add to this cell", preferredStyle:
@@ -257,6 +244,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             self.present(alert, animated: true, completion:nil)
         }
+        
     }
     
     
@@ -420,9 +408,6 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
             collection.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             collection.endInteractiveMovement()
-//MARK: Add Later
-  //          doneBtn.isHidden = false
- //           longPressedEnabled = true
             self.collection.reloadData()
         default:
             collection.cancelInteractiveMovement()
@@ -459,6 +444,7 @@ class TierViewController: UIViewController, UICollectionViewDelegate, UICollecti
 }
 
 //a class for the cells, just changes background color and gives a lil curve to the corners
+//MARK: First Cell
 class firstCell: UICollectionViewCell{
 
     override init(frame: CGRect) {
