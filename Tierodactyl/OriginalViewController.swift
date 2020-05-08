@@ -11,6 +11,11 @@ import UIKit
 class OriginalViewController: UIViewController {
 
     override func viewDidLoad() {
+        print("Yes this is working")
+        
+        self.navigationItem.leftBarButtonItems?.removeAll()
+        self.navigationItem.rightBarButtonItems?.removeAll()
+        
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.

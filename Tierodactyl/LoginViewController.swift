@@ -11,61 +11,69 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class LoginViewController: UIViewController {
-
-    @IBOutlet weak var username: UITextField!
-       
-       @IBOutlet weak var password: UITextField!
-       
-       @IBOutlet weak var loginButtonO: UIButton!
-       @IBAction func loginButton(_ sender: Any) {
-           guard let email = username.text else {return}
-           guard let password = password.text else {return}
-           Auth.auth().signIn(withEmail: email, password: password) { (user, error)
-               in
-               if let _ = user {
-                    print("user created")
-                   self.dismiss(animated: false, completion: nil)
-               }
-               else {
-                   print(error!.localizedDescription)
-               }
-           }
-       }
-       func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-           if username.isFirstResponder {
-               password.becomeFirstResponder()
-           }
-           else if password.isFirstResponder {
-               password.resignFirstResponder()
-               loginButtonO.isEnabled = true
-           }
-           return true
-       }
-       override func viewDidLoad() {
-           super.viewDidLoad()
-
-           // Do any additional setup after loading the view.
-       }
+    
+    @IBOutlet weak var email2: UITextField!
+    
+    @IBOutlet weak var password: UITextField!
+    
+    
+    @IBOutlet weak var loginButtonO: UIButton!
+    @IBAction func loginButton(_ sender: Any) {
+        guard let email = email2.text else {return}
+        guard let password = password.text else {return}
+        
+        print("yoohoo")
+               print(email)
+               print(password)
+        
+        Auth.auth().signIn(withEmail: email, password: password){(user, error)
+            in
+            if error == nil && user != nil {
+                print("user found")
+                self.dismiss(animated: false, completion: nil)
+//                self.navigationController?.pushViewController(HomeScreenViewController(), animated: false)
+            }
+            else {
+                print(error!.localizedDescription)
+            }
+        }
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if email2.isFirstResponder {
+            password.becomeFirstResponder()
+        }
+        else if password.isFirstResponder {
+            password.resignFirstResponder()
+            loginButtonO.isEnabled = true
+        }
+        return true
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        email2.becomeFirstResponder()
+        // Do any additional setup after loading the view.
+    }
     
     
     //asynchronus data - reference database .observe
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           if let HomeScreenViewController = segue.destination as? HomeScreenViewController{
-//               HomeScreenViewController.userID =
-//                HomeScreenViewController.name = self.username.text ?? " "
-           }
-       }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        print("User ID: \(Auth.auth().currentUser?.uid ?? "0")")
+        
+        if let HomeScreenViewController = segue.destination as? HomeScreenViewController{
+            HomeScreenViewController.userID = Auth.auth().currentUser?.uid ?? " "
+        }
     }
-    */
-
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

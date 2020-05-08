@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yTF-8z-TGr">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -274,12 +274,12 @@
                                     <segue destination="eZK-EQ-H3P" kind="show" id="s8F-PC-VlX"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rER-wF-SUa">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rER-wF-SUa" userLabel="Email">
                                 <rect key="frame" x="10" y="81" width="394" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3D4-4a-ZaZ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3D4-4a-ZaZ">
                                 <rect key="frame" x="10" y="52" width="113" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -321,9 +321,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="hOm-50-DO5"/>
                     <connections>
+                        <outlet property="email2" destination="rER-wF-SUa" id="ZOH-CA-jpo"/>
                         <outlet property="loginButtonO" destination="caF-ga-BAp" id="j3d-3d-Ywm"/>
-                        <outlet property="password" destination="kvl-wL-dHL" id="Vb4-K5-gMQ"/>
-                        <outlet property="username" destination="rER-wF-SUa" id="QGS-Ef-Om2"/>
+                        <outlet property="password" destination="kvl-wL-dHL" id="0YM-Ta-jIC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1aS-9O-tmr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -356,9 +356,10 @@
                         <viewLayoutGuide key="safeArea" id="CNC-kd-9lN"/>
                     </view>
                     <navigationItem key="navigationItem" title="Your Lists" id="YmQ-sE-fvK">
-                        <barButtonItem key="leftBarButtonItem" title="Sign out" id="nie-GH-207">
+                        <barButtonItem key="leftBarButtonItem" title="Sign out" style="plain" id="nie-GH-207">
                             <connections>
-                                <segue destination="7Zg-2L-s0J" kind="show" id="flI-5S-GQv"/>
+                                <action selector="signOut:" destination="eZK-EQ-H3P" id="9aY-td-ozf"/>
+                                <segue destination="7Zg-2L-s0J" kind="show" identifier="SignOut" id="598-bE-2Fi"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
@@ -416,8 +417,8 @@
         <image name="tier" width="1082" height="1082"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9yi-rv-Eof"/>
-        <segue reference="s8F-PC-VlX"/>
-        <segue reference="flI-5S-GQv"/>
+        <segue reference="SkG-5i-Nhw"/>
+        <segue reference="VAA-D1-fiu"/>
+        <segue reference="598-bE-2Fi"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -581,7 +581,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl;
+				PRODUCT_BUNDLE_IDENTIFIER = constraints.Tierodactyl123;
 				PRODUCT_NAME = ptierodactyl;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

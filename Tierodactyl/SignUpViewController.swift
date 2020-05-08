@@ -29,6 +29,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         guard let password = password.text else {return}
         guard let name = username.text else {return}
         
+       
         //creates user
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let _ = user{
@@ -77,8 +78,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("User ID: \(userID)")
         if let HomeScreenViewController = segue.destination as? HomeScreenViewController{
-            HomeScreenViewController.userID = self.userID
+            HomeScreenViewController.userID = Auth.auth().currentUser?.uid ?? " "
             HomeScreenViewController.name = self.username.text ?? " "
         }
     }

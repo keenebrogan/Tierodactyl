@@ -103,6 +103,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         let moveObjTemp = listNames[sourceIndexPath.item]
         listNames.remove(at: sourceIndexPath.item)
         listNames.insert(moveObjTemp, at: destinationIndexPath.item)
+        self.ref.child("List Names/\(userID)/\(listNames[destinationIndexPath.item])").setValue(destinationIndexPath.item-1)
     }
     
     // works with deleting (see line 136)
@@ -148,7 +149,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         listNames.append(listNameTextField.text ?? " ")
         
         //this should work with the database, I don't think it works yet though
-        self.ref.child("List Names/\(userID)/\(listNames[listNames.endIndex - 1])/").setValue(listNames.endIndex)
+        self.ref.child("List Names/\(userID)/\(listNames[listNames.count - 1])/").setValue(listNames.count)
         
         self.tbView.reloadData()
     }
@@ -181,20 +182,46 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func signOut(_ sender: UIBarButtonItem) {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print ("Error signing out: %@", signOutError)
+        }
+        self.performSegue(withIdentifier: "SignOut", sender: nil)
+
+    }
     
     
     override func viewDidLoad() {
         
-        //this allows us to use the uid
-        if let user = Auth.auth().currentUser?.uid {
-            self.userID = user
+        //this sets up an example list
+        self.ref.child("List Names/\(userID)/Fruits").setValue(1)
+        listNames.append("Fruits")
+        
+        self.ref.child("List Names/\(userID)/Fruits/1/banana").setValue("a")
+        self.ref.child("List Names/\(userID)/Fruits/1/apple").setValue("b")
+        self.ref.child("List Names/\(userID)/Fruits/2/orange").setValue("a")
+        self.ref.child("List Names/\(userID)/Fruits/2/blueberry").setValue("b")
+        
+        ref.child("List Names").child(userID).observe(.childAdded, with: { (snapshot) in
+            
+            // Get ListName
+            let listName = snapshot.key
+            //let num = snapshot.value as? Int
+            
+            if !self.listNames.contains(listName){
+                self.listNames.append(listName)
+            }
+            self.tbView.reloadData()
+            
+        
+            // ...
+        }) { (error) in
+            print(error.localizedDescription)
         }
         
-        //this sets up an example list
-        self.ref.child("List Names/\(userID)/Example/Fruits/banana").setValue("1a")
-        self.ref.child("List Names/\(userID)/Example/Fruits/apple").setValue("2a")
-        self.ref.child("List Names/\(userID)/Example/Fruits/orange").setValue("1b")
-        self.ref.child("List Names/\(userID)/Example/Fruits/blueberry").setValue("2b")
         
         //this sets up the table (see line 52)
         setUpTable()
@@ -218,24 +245,22 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         self.performSegue(withIdentifier: "Segue", sender: nil)
         
     }
-
-
+    
+    
     
     
     //This does nothing - working on it
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-//        if let cell = sender as? HomeScreenCell{
-//
-//
-//            if let tierViewController = segue.destination as? TierViewController{
-//                tierViewController.title =  cell.textLabel?.text
+//        override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+//            if let cell = sender as? OriginalViewController{
+//    
+//    
+//            
 //            }
 //        }
-//    }
     
     /*
      // MARK: - Navigation
