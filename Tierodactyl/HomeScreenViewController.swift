@@ -189,7 +189,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         } catch let signOutError as NSError {
           print ("Error signing out: %@", signOutError)
         }
-        self.performSegue(withIdentifier: "SignOut", sender: nil)
+        self.performSegue(withIdentifier: "unwindd", sender: nil)
 
     }
     
