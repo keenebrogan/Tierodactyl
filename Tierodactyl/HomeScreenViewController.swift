@@ -16,11 +16,11 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     let tbView = UITableView()
     
     //All the lists? I don't think this does anything
-    //var lists : [SeparateLists] = []
     
     //Lists for the table
     var listNames = [String]()
     
+    //user info
     var userID: String = ""
     var name: String = ""
     var password: String = ""
@@ -28,11 +28,6 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     //for adding
     var listNameTextField : UITextField!
     
-    //I don't think this does anything right now
-    var homeLists: [String: [TierViewController]] = [:]
-    
-    //    var button = UIButton()
-    //    var bar = UIBarButtonItem()
     
     let firstTimeMess = "Welcome to pTIERodactyl! Here you can create as many tier lists as you want! As this is your first time using our product, please tap through the 'Example' tier list. When you are finished you can delete this list and add your own by using the buttons in the top right corner of your screen! Enjoy!"
     
@@ -64,38 +59,12 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         //        tbView.backgroundColor = .white
         tbView.backgroundColor = .init(cgColor: CGColor.init(srgbRed: 61, green: 80, blue: 163, alpha: 0.0))
         
-        //var tableView = UITableView()
         tbView.delegate = self
         tbView.dataSource = self
         
-        //tableView.register(HomeScreenTableViewCell(), forCellReuseIdentifier: "MyCell")
-        
-        //     view.addSubview(tableView)
         tbView.register(HomeScreenCell.self, forCellReuseIdentifier: "homeScreenCell")
         
     }
-    
-    //      I used to have a button here, will delete later
-    //    func setUpButton(){
-    //        // 2. add to subview
-    //        view.addSubview(button)
-    //        // 3. add props
-    //        button.setTitle("+", for: .normal)
-    //        button.setTitleColor(.white, for: .normal)
-    //        button.backgroundColor = .blue
-    //        button.titleLabel?.font = UIFont(name: "Helvetica Nue", size: 75)
-    //        // 4. set up func when button pressed
-    //        button.addTarget(self, action: #selector(addAction), for: .touchUpInside)
-    //
-    //       button.addTarget(self, action: #selector(addAction()), for: .touchUpInside)
-    //
-    //        button.translatesAutoresizingMaskIntoConstraints = false
-    //
-    //        button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-    //        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 400).isActive = true
-    //        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    //        button.widthAnchor.constraint(equalToConstant: 1000).isActive = true
-    //    }
     
     
     //works with editing (see line 136)
@@ -201,11 +170,12 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         self.ref.child("List Names/\(userID)/Fruits").setValue(1)
         listNames.append("Fruits")
         
-        self.ref.child("List Names/\(userID)/Fruits/1/banana").setValue("a")
-        self.ref.child("List Names/\(userID)/Fruits/1/apple").setValue("b")
-        self.ref.child("List Names/\(userID)/Fruits/2/orange").setValue("a")
-        self.ref.child("List Names/\(userID)/Fruits/2/blueberry").setValue("b")
+        self.ref.child("List Names/\(userID)/Fruits/0/banana").setValue("a")
+        self.ref.child("List Names/\(userID)/Fruits/0/apple").setValue("b")
+        self.ref.child("List Names/\(userID)/Fruits/1/orange").setValue("a")
+        self.ref.child("List Names/\(userID)/Fruits/1/blueberry").setValue("b")
         
+        //this updates the tableview with lists already created by the user in the database
         ref.child("List Names").child(userID).observe(.childAdded, with: { (snapshot) in
             
             // Get ListName
@@ -227,14 +197,14 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //this sets up the table (see line 52)
         setUpTable()
-        //        setUpButton()
+        
         super.viewDidLoad()
         
         //This line of code makes it so that you can't see the outline of cells when they aren't there. I can just delete this but I think it looks cool so idk
         tbView.tableFooterView = UIView(frame: CGRect.zero)
         
     }
-    
+    //this is for a first time users pop up
     override func viewDidAppear(_ animated: Bool) {
         if(!appDelegate.hasAlreadyLaunched){
             
@@ -255,7 +225,7 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    //This does nothing - working on it
+    //This sends info to TierView
         override func prepare(for segue: UIStoryboardSegue, sender: Any?){
             if segue.identifier == "Segue"{
                 if let indexPath = self.tbView.indexPathForSelectedRow{
@@ -265,16 +235,6 @@ class HomeScreenViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
         }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
 
